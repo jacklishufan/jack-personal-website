@@ -1,0 +1,290 @@
+/*   
+From Colorado Reed
+
+This is uncopyrighted, free, and offered as is.
+Use it however you want but don't blame me if it breaks.
+
+This incident will be reported.
+*/
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Helvetica-neue,
+                 Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+                 "Segoe UI Symbol";
+    font-size: 1.1rem;
+    line-height: 1.5em;
+    color: #353033;
+    background: #fff;
+    max-width: 38rem;
+    padding: 0 2rem;
+    margin: auto;
+  }
+  
+  h1 {
+    font-size: 1.6em;
+    color:#333;
+    line-height: 1.5em;
+    font-weight:normal;
+    margin-top: 0;
+  }
+  
+  .site {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+  
+  .site-content {
+    flex: 1;
+    padding-top: 2rem;
+  }
+  
+  .list-header h3,
+  .list-header time { 
+    display: inline;
+  }
+  
+  p {
+    line-height: 1.4em;
+  }
+  
+  ul {
+    list-style: none;
+    margin: 0;
+  }
+  
+  a {
+    color: #353033;
+    text-decoration-color: #3f5843;
+    text-decoration-style: solid;
+    text-decoration-thickness: .125em;
+    text-underline-offset: 1.5px;
+  }
+  a:hover {
+    color: #999;
+  }
+  
+  
+/*   
+From Colorado Reed
+
+This is uncopyrighted, free, and offered as is.
+Use it however you want but don't blame me if it breaks.
+
+This incident will be reported.
+*/
+
+@-webkit-keyframes name {
+    0% {background-color:black;}
+    100% {background-color:white;}
+  }
+  
+  body {
+    font-size: 1rem;
+    max-width: 42rem;
+    text-align: justify;
+    -webkit-animation:name 0.5s;
+  }
+  
+  footer svg {
+    height: 16vw;
+    width: 100%;
+    opacity: 0.15;
+  }
+  
+  .nav-list {
+    padding: 0;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .profile-img {
+    margin: auto;
+    border: 1px solid #999;
+    border-radius: 50%;
+    height: 15rem;
+    width: 15rem;
+    background: url(./headshot.jpg);
+    background-size: cover;
+  }
+  /* .profile-img:hover {
+    background: url(../static/img/headshot-w-pretzel.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+   */
+  
+  .profile-text {
+    margin-top: 2rem;
+  }
+  .profile-text ul {
+    padding-left: 0.3rem;
+    margin-top: 1rem;
+  }
+  
+  .question {
+    font-weight: bold;
+    margin: 0;
+    margin-top: 1rem;
+  }
+  
+  .answer {
+    margin-top: 0;
+  
+  }
+  
+  .section {
+    margin-top: 3rem;
+  }
+  
+  .social-links{
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  .social-links a {
+    /* text-decoration: none; */
+    opacity: 0.7;
+    display: inline-block;
+  }
+  .social-links a+a {
+    margin-left: 0.5rem;
+  }
+  .social-links a:hover {
+    /* text-decoration: none; */
+    opacity: 1.0;
+  }
+  .social-links svg {
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+  }
+  
+  ul {
+    padding: 0;
+  }
+  .publications li {
+      margin-bottom: 3rem;
+  }
+  .publications h3 {
+    text-align: center;
+    margin: 2rem 0;
+    /* font-style: italic; */
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 0.1rem 0;
+    background: rgba(0,0,0,0.6);
+    color: white;  
+  }
+  
+  .title {
+    font-weight: bolder;
+  }
+  .tldr{
+    font-style: italic;
+    color: gray;
+    font-size: 0.9rem;
+    margin-top:0.3rem;
+    line-height: 1.1rem;
+  }
+  
+  .awards ul, .advisees ul {
+    padding-left: 1rem;
+    list-style-type:square;
+  }
+  
+  .email-bit {
+    line-height: 1rem;
+    font-family: mono;
+    text-align: center;
+    font-size: 0.7rem;
+    color: rgba(0,0,0,0.2);
+  }
+  
+  .email-bit span::selection {
+      background: black;
+      color: #33FF33;
+  }
+  
+  .waviy {
+    display: block;
+    cursor: pointer;
+    margin: auto;
+    text-align: center;
+    font-size: .8em;
+    margin-top: -10px;
+    font-style: italic;  
+  }
+  .waviy span {
+    position: relative;
+    display: inline-block;
+    animation: flip 5s infinite;
+    animation-delay: calc(.1s * var(--i));
+    margin-left: -0.15rem;
+  }
+  @keyframes flip {
+    0%,80% {
+      transform: rotateY(360deg) 
+    }
+  }
+  
+  .waviy:hover {
+    background: #ebebeb;
+  }
+  
+  :checked + #tell-me-more {
+    display: none;  
+  }
+  
+  :checked ~ .more-bio {
+    display: block;
+  }
+  
+  .more-bio {
+    display: none;
+  }
+  
+  .pub-wrap {
+    display: flex;
+  }
+  
+  .pub-img, .pub-img img {
+    max-width: 170px;
+    width: 30vw;
+    border-radius: 5px;
+  }
+  
+  .pub {
+    line-height: 1.2rem;
+    margin-left: 2rem;
+    margin-top: -6px;
+  }
+  .pub div {
+    margin-bottom: 0.5rem;
+  
+  }
+  
+  .call-for-job {
+    margin-top: 2rem;
+    text-align: center;
+    padding: 1rem;
+    border: 1px dashed #ff7878;
+    border-radius: 5px;
+    font-style: italic;
+  }
+  
+  @media all and (min-width:0px) and (max-width: 568px) {
+    /* put your css styles in here */
+    footer svg {
+      display: none;
+    }
+  
+    body{
+      text-align: left;
+      margin-bottom: 3rem;
+      padding: 2rem 1rem;
+    }
+  
+    .pub {
+      margin-left: 0.5rem;
+    }
+  }
+  
