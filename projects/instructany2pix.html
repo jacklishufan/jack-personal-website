@@ -1,0 +1,115 @@
+<html><!-- ======================================================================= --><head><script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-JQP1X5LM8Y&amp;l=dataLayer&amp;cx=c"></script><script src="http://www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript">google.load("jquery", "1.3.2");</script>
+    <link rel="stylesheet" href="./bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./instructany2pix/animation.css">
+    <link rel="stylesheet" href="./instructany2pix/layout.css">
+
+    <title>InstructAny2Pix: Flexible Visual Editing via Multimodal Instruction Following </title>
+    <meta property="og:title" content="DETReg: Unsupervised Pretraining with Region Priors for Object Detection">
+    <meta http-equiv="origin-trial" content="AymqwRC7u88Y4JPvfIF2F37QKylC04248hLCdJAsh8xgOfe/dVJPV3XS3wLFca1ZMVOtnBfVjaCMTVudWM//5g4AAAB7eyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGV0YWdtYW5hZ2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjk1MTY3OTk5LCJpc1RoaXJkUGFydHkiOnRydWV9"></head>
+    
+    <body>
+        <div class="container-fluid">
+        <center>
+        <div style="font-size:65px">InstructAny2Pix</div>
+        <div  style="font-size:30px">Flexible Visual Editing via Multimodal Instruction Following </div>
+        
+        <div>
+        <span style="font-size:24px" class="title-link"><a href="http://homepage.jackli.org/">Shufan Li</a><sup>1*</sup></span> &nbsp;
+                <span style="font-size:24px" class="title-link"><a href="https://www.linkedin.com/in/harkanwar-singh">Harkanwar Singh</a><sup>1</sup></span> &nbsp;
+                <span style="font-size:24px" class="title-link"><a href="http://aditya-grover.github.io">Aditya Grover</a><sup>1</sup></span> &nbsp;
+            </div>
+        </center>
+    
+    
+    <!--    <br><br><br>-->
+    
+    <!--    <br><br>-->
+    
+    
+        <table align="center">
+            <tbody><tr>
+                <td align="center">
+                    <center>
+                        <!-- <span style="font-size:20px">
+                            <sup>1</sup>University of California, Los Angeles &nbsp;
+                        </span> -->
+                    </center>
+                </td>
+            </tr>
+        </tbody></table>
+    <!--    <br>-->
+    
+    
+    <!--    <span style="font-size:24px">Preprint. Under review.</span>-->
+    
+    
+    
+    </center>
+    <!--<left>    <span style="font-size:18px"><sup>*</sup>Equally contributed</span> </left>-->
+    <!-- <center><img src="data/illustration.png" align="middle"></center> -->
+   
+    <div class="background-block row newBtnLayout" >
+        <div class="newBtnLayout-shadow">
+            <div class="col-12">
+                <div class="mob-inst-text" style="padding:0 0 10px 0;text-align:center;font-size:30px;">
+                University of California, Los Angeles</div>
+            </div>
+            <div class="button-flex">
+                <a href="./Instructany2Pix.pdf" class="button-link">
+                    <span class="icon">
+                        <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>Paper</span>
+                </a>
+                <a href="https://github.com/luosiallen/latent-consistency-model" class="button-link">
+                    <span class="icon">
+                        <svg height="1.5em" class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg=""><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg><!-- <i class="fab fa-github"></i> Font Awesome fontawesome.com -->
+                    </span>
+                    <span>Code</span>
+                </a>
+                <a href="http://170.106.137.89:8888" class="button-link">🔥
+                    Demo </a>
+                <a href="https://huggingface.co/SimianLuo/LCM_Dreamshaper_v7" class="button-link">Hugging Face
+                    🤗
+                    Model </a>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="background-block row mob-bottom" style="padding-bottom:5vh;">
+    <div class="col-12 Abstract-box mob-col-12" style="padding:0 !important;">
+        <div class="Abstract title-layout">
+            <h3 class="font-ma">Abstract</h3>
+        </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-10 mob-col-12" style="padding:0;">
+        <div class="abstract-text">
+            The ability to provide fine-grained control for generating and editing visual imagery has profound implications for computer vision and its applications. Previous works have explored extending controllability in two directions: instruction tuning with text-based prompts and multi-modal conditioning. However, these works make one or more unnatural assumptions on the number and/or type of modality inputs used to express controllability. We propose InstructAny2Pix, a flexible multi-modal instruction-following system that enables users to edit an input image using instructions involving audio, images, and text. InstructAny2Pix consists of three building blocks that facilitate this capability: a multi-modal encoder that encodes different modalities such as images and audio into a unified latent space, a diffusion model that learns to decode representations in this latent space into images, and a multi-modal LLM that can understand instructions involving multiple images and audio pieces and generate a conditional embedding of the desired output, which can be used by the diffusion decoder. Additionally, to facilitate training efficiency and improve generation quality, we include an additional refinement prior module that enhances the visual quality of LLM outputs. These designs are critical to the performance of our system. We demonstrate that our system can perform a series of novel instruction-guided editing tasks.
+        </div>
+
+    </div>
+    <div class="col-1"></div>
+</div>   
+ </div>
+
+    <table align="center" style="margin-bottom: 50px">
+        <tbody><tr>
+            <td>
+                <left>
+                    <center><h1>Acknowledgements</h1></center>
+    
+                    This research was supported by Cisco.
+    </left>
+            </td>
+        </tr>
+    </tbody></table>
+    
+    
+    
+    
+    </body></html>
