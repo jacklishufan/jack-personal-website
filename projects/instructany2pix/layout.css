@@ -250,3 +250,36 @@ strong {
 .abstract-text-box {
 	margin-bottom: 2vh;
 }
+
+.image-entry {
+	width: 100%;
+}
+
+.image-box {
+	width: 100%;
+	height: 100%;
+	vertical-align: middle;
+	align-items: center;
+	justify-content: center;
+}
+
+.mid-container {
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+}
+
+.mid-container .col {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+.generated-imageBox1 {
+	display: flex;
+}
