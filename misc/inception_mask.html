@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mask Diffusion Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            font-size: 24px;
+            letter-spacing: 2px;
+        }
+        td, th {
+            padding: 5px 10px;
+            border: 0px solid #ccc;
+            text-align: center;
+        }
+        .masked {
+            color: blue;
+        }
+        .random-mask {
+            color: red;
+        }
+        .caption {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 20px;
+        }
+        .word-column {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<table id="maskTable">
+    <thead>
+        <tr>
+            <th></th>
+            <th>t</th>
+            <th>r</th>
+            <th class="word-column"></th>
+            <th class="word-column"></th>
+            <th class="word-column"></th>
+            <th class="word-column"></th>
+            <th class="word-column"></th>
+            <th class="word-column"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="caption">mask</td>
+            <td id="maskRatioMask">0</td>
+            <td id="maskCountMask">0</td>
+            <td class="word-column">A</td>
+            <td class="word-column">dog</td>
+            <td class="word-column">is</td>
+            <td class="word-column">on</td>
+            <td class="word-column">the</td>
+            <td class="word-column">grass</td>
+        </tr>
+        <tr>
+            <td class="caption">uniform</td>
+            <td id="maskRatioUniform">0</td>
+            <td id="maskCountUniform">0</td>
+            <td class="word-column">A</td>
+            <td class="word-column">dog</td>
+            <td class="word-column">is</td>
+            <td class="word-column">on</td>
+            <td class="word-column">the</td>
+            <td class="word-column">grass</td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    const words = ["A", "dog", "is", "on", "the", "grass"];
+    const randomWords = ["cat", "tree", "house", "river", "sky", "mountain"];
+    const maskTable = document.getElementById("maskTable").rows[1].cells;
+    const randomMaskTable = document.getElementById("maskTable").rows[2].cells;
+    let maskCount = 0;
+
+    function getRandomWord() {
+        return randomWords[Math.floor(Math.random() * randomWords.length)];
+    }
+
+    function updateMaskStats(rowId, ratioId, countId) {
+        const totalWords = words.length;
+        document.getElementById(countId).textContent = maskCount;
+        document.getElementById(ratioId).textContent = (maskCount / totalWords * 1000).toFixed(2);
+    }
+
+    function startDiffusion(words, interval) {
+        let currentIndex = words.length - 1; // Start from the last word
+        maskCount = 0;
+
+        const diffusionInterval = setInterval(() => {
+            if (currentIndex < 0) {
+                // Reset for the loop
+                currentIndex = words.length - 1;
+                maskCount = 0;
+                // Restore the original text
+                for (let i = 3; i < words.length + 3; i++) {
+                    maskTable[i].textContent = words[i - 3];
+                    maskTable[i].classList.remove('masked');
+                    randomMaskTable[i].textContent = words[i - 3];
+                    randomMaskTable[i].classList.remove('random-mask');
+                }
+                return;
+            }
+            maskTable[currentIndex + 3].textContent = '*';
+            maskTable[currentIndex + 3].classList.add('masked');
+            randomMaskTable[currentIndex + 3].textContent = getRandomWord();
+            randomMaskTable[currentIndex + 3].classList.add('random-mask');
+            maskCount++;
+            updateMaskStats('maskTable', 'maskRatioMask', 'maskCountMask');
+            updateMaskStats('maskTable', 'maskRatioUniform', 'maskCountUniform');
+            currentIndex--;
+        }, interval);
+    }
+
+    startDiffusion(words, 500); // Speed up the interval to 500ms
+</script>
+
+</body>
+</html>
