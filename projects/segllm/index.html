@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Scale-MAE: A Scale-Aware Masked Autoencoder for
+  Multiscale Geospatial Representation Learning.">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SegLLM</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">SegLLM</h1>
+            <h2 class="title is-2 publication-title">Multi-round Reasoning Segmentation</h2>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="http://people.eecs.berkeley.edu/~xdwang/">Xudong Wang*</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://ritwikgupta.me">Shaolun Zhang*</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://homepage.jackli.org/">Shufan Li*</a><sup>2</sup>,
+              </span>
+              <br>
+
+              <span class="author-block">
+                <a href="https://tech-ai.panasonic.com/en/researcher_introduction/048/"> Konstantinos Kallidromitis</a><sup>3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://profiles.stanford.edu/kehan-li/">Kehan Li</a><sup>4</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://kazukikozuka.net">Kazuki Kozuka</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://people.eecs.berkeley.edu/~trevor">Trevor Darrell</a><sup>1</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>UC Berkeley</span>
+              <span class="author-block"><sup>2</sup>UCLA</span>
+              <span class="author-block"><sup>3</sup>Panasonic</span>
+              <span class="author-block"><sup>4</sup>Stanford</span>
+            </div>
+
+            <!-- <h2 class="title is-4 publication-title" style="padding-top: 0.5em">ICCV 2023 Best Paper Nominee</h2> -->
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2410.18923"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <!-- <span class="link-block">
+                  <a href="https://github.com/bair-climate-initiative/scale-mae/"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code and Models</span>
+                  </a>
+                </span> -->
+                <!-- Presentation Link. --->
+                <!-- <span class="link-block">
+                  <a href="https://github.com/bair-climate-initiative/scale-mae/presentation/index.html"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-chalkboard"></i>
+                    </span>
+                    <span>Slides</span>
+                  </a>
+                </span> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <iframe src="segllm.html" width="100%" height="600px"></iframe>
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        
+        <!-- <img src="./static/images/scale-teaser.png" height="100%"></img> -->
+      </div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">SegLLM</span> is a multi-round conversation agent capable of localizing objects following natural language insturtcions
+      </h2>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+
+                We present <span
+                class="dnerf">SegLLM</span>, a novel multi-round interactive reasoning segmentation model that enhances LLM-based segmentation by exploiting conversational memory of both visual and textual outputs. By leveraging a mask-aware multimodal LLM, <span
+                class="dnerf">SegLLM</span> re-integrates previous segmentation results into its input stream, enabling it to reason about complex user intentions and segment objects in relation to previously identified entities, including positional, interactional, and hierarchical relationships, across multiple interactions. This capability allows <span
+                class="dnerf">SegLLM</span> to respond to visual and text queries in a chat-like manner. Evaluated on the newly curated MRSeg benchmark, <span
+                class="dnerf">SegLLM</span> outperforms existing methods in multi-round interactive reasoning segmentation by over 20%. Additionally, we observed that training on multi-round reasoning segmentation data enhances performance on standard single-round referring segmentation and localization tasks, resulting in a 5.5% increase in cIoU for referring expression segmentation and a 4.5% improvement in Acc@0.5 for referring expression localization.
+      </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">MRSeg Dataset</h2>
+          <img src="./segllm/dataset.png">
+          <div class="content has-text-justified">
+            <p>
+              The success of <span class="dnerf">SegLLM</span> attributes to its high-quality multi-round segmentation dataset, called MRSeg. 
+              MRSeg incorprates a diverse set of inter-object relations such as hierarchical relationships (e.g "the hand of"), positional relationships (e.g. "to the left of"), interactional relationships (e.g. "looking at"), and other attribute-oriented queries. MRSeg is based on several widely utilized datasets, and include data from  RefCOCO(+/g), Visual Genome, PACO-LVIS, LVIS, Pascal Panoptic Part, ADE20K, COCO-Stuff and MSCOCO.
+            </p>
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">SegLLM Architecture</h2>
+          <img src="./segllm/architecture.png">
+          <div class="content has-text-justified">
+            SegLLM performs multi-round interactive image reasoning segmentation, which involves understanding complex user queries and segment entities based on their relationships with other objects. 
+            There are two key designs in SegLLM that facilitate this goal: 
+            First, we implement a mask encoding scheme that reincorporates the reference mask information back into the input stream of the LLMs. This enables the LLMs to reason about segmented masks from previous rounds. 
+            Second, we develop a mask-aware decoding scheme that allows the mask decoder to generate new masks based on both the output from the LLMs and the historical memory of output masks. The model uses the last layer hidden states associated with the [REF] and [SEG] tokens to generate both the reference mask and the target mask, seamlessly integrating past and current segmentation results.
+            More details can be found in our Paper.
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered" style="width: 100%">
+          <div class="column is-full-width" style="width: 100%">
+            <h2 class="title is-3">Visualizations</h2>
+            <img src="./static/images/reconstruction.png">
+            <div class="content has-text-justified">
+              <p>
+                While <span class="dnerf">Scale-MAE</span> is not built with the goal of high-fidelity reconstruction,
+                the reconstructions that our method does produce are convincing. Notably, the learned low and high
+                frequency components are visually convincing.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section> -->
+
+
+
+<!-- 
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Related Links</h2>
+
+            <div class="content has-text-justified">
+              <p>
+                There's a wonderful project called <a href="">SatMAE</a> that also pretrains models for geospatial
+                imagery, particularly multi-modal spatiotemporal data -- check out that project if it fits your use
+                case! Also, <span class="dnerf">Scale-MAE</span> and SatMAE should be able to be combined for
+                multi-scale multi-modal
+                spatiotemporal data, but we haven't tried it yet ourselves. Let us know if you do!
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section> -->
+
+
+  <!-- <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@InProceedings{ScaleMAE_2023_ICCV,
+    author    = {Reed, Colorado J and Gupta, Ritwik and Li, Shufan and Brockman, Sarah and Funk, Christopher and Clipp, Brian and Keutzer, Kurt and Candido, Salvatore and Uyttendaele, Matt and Darrell, Trevor},
+    title     = {Scale-MAE: A Scale-Aware Masked Autoencoder for Multiscale Geospatial Representation Learning},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {4088-4099}
+}</code></pre>
+    </div>
+  </section> -->
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://arxiv.org/abs/2212.14532">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/bair-climate-initiative/scale-mae/" class="external-link"
+          disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This website came from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies project website
+                template</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
