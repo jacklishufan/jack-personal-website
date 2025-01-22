@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffusion Process Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            padding: 20px;
+        }
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            border: 1px solid #ccc;
+        }
+        .controls {
+            flex: 0.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        input[type="range"] {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <canvas id="diffusionCanvas" width="400" height="400"></canvas>
+        </div>
+        <div class="controls">
+            <label for="timeSlider"><strong>Time (t):</strong></label>
+            <input id="timeSlider" type="range" min="0" max="1" step="0.01" value="1">
+            <p>Value: <span id="timeValue">1.00</span></p>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById("diffusionCanvas");
+        const ctx = canvas.getContext("2d");
+        const slider = document.getElementById("timeSlider");
+        const timeValue = document.getElementById("timeValue");
+
+        // Function to generate a noisy image
+        function generateNoiseImage(size, intensity) {
+            const imageData = ctx.createImageData(size, size);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const noise = Math.random() * intensity;
+                data[i] = noise; // Red
+                data[i + 1] = noise; // Green
+                data[i + 2] = noise; // Blue
+                data[i + 3] = 255; // Alpha
+            }
+            return imageData;
+        }
+
+        // Function to simulate the diffusion process
+        function applyDiffusion(imageData, t) {
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const blend = (1 - t) * 255;
+                data[i] = data[i] * t + blend; // Red
+                data[i + 1] = data[i + 1] * t + blend; // Green
+                data[i + 2] = data[i + 2] * t + blend; // Blue
+            }
+            return imageData;
+        }
+
+        // Initialize the canvas with noise
+        const size = 400;
+        let noiseImage = generateNoiseImage(size, 255);
+        ctx.putImageData(noiseImage, 0, 0);
+
+        // Update canvas based on slider
+        slider.addEventListener("input", () => {
+            const t = parseFloat(slider.value);
+            timeValue.textContent = t.toFixed(2);
+
+            // Generate diffusion effect
+            const diffusedImage = applyDiffusion(noiseImage, t);
+            ctx.putImageData(diffusedImage, 0, 0);
+        });
+    </script>
+</body>
+</html>
