@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="LaViDa: A Large Diffusion Model for Vision-Language Understanding">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LaViDa</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">LaViDa</h1>
+            <h2 class="title is-2 publication-title">LaViDa: A Large Diffusion Model for Vision-Language Understanding</h2>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="http://homepage.jackli.org/">Shufan Li*</a><sup>1</sup>,</span>
+             <span class="author-block">
+                <a href="https://tech-ai.panasonic.com/en/researcher_introduction/048/"> Konstantinos Kallidromitis*</a><sup>2</sup>,
+              </span>
+            <span class="author-block">
+                <a href="https://sites.google.com/view/hbansal">Hritik Bansal*</a><sup>1</sup>,
+              </span>
+            <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=MYRUJkUAAAAJ&hl=en">Akash Gokul*</a><sup>3</sup>,
+              </span>
+           <span class="author-block">
+                <a href="https://www.linkedin.com/in/yusuke-kato-b1a875175/?originalSubdomain=jpt">Yusuke Kato</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://kazukikozuka.net">Kazuki Kozuka</a><sup>2</sup>,
+              </span>
+
+              <br>
+              <span class="author-block">
+                <a href="https://research.adobe.com/person/jason-kuen/">Jason Kuen</a><sup>4</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://sites.google.com/site/zhelin625/home/">Zhe Lin</a><sup>4</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://web.cs.ucla.edu/~kwchang/">Kai-Wei Chang</a><sup>3</sup>,
+              </span>
+              <!-- <br> -->
+              <span class="author-block">
+                <a href="https://aditya-grover.github.io">Aditya Grover</a><sup>1</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>UCLA</span>
+              <span class="author-block"><sup>2</sup>Panasonic AI Research</span>
+              <span class="author-block"><sup>3</sup>Salesforce Research</span>
+              <span class="author-block"><sup>4</sup>Adobe Research</span>
+            </div>
+
+            <!-- <h2 class="title is-4 publication-title" style="padding-top: 0.5em">ICCV 2023 Best Paper Nominee</h2> -->
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/jacklishufan/LaViDa/blob/main/paper/paper.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/jacklishufan/LaViDa"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code and Models</span>
+                  </a>
+                </span>
+                
+                <!-- Presentation Link. --->
+                <!-- <span class="link-block">
+                  <a href="https://drive.google.com/file/d/1ylt7KsLVR8IaBbhRLRL-2DRwiREPRy1r/view?usp=sharing"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-chalkboard"></i>
+                    </span>
+                    <span>Slides</span>
+                  </a>
+                </span> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="./static/images/demo.gif" height="100%"></img>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">LaViDa</span> is a multi-modal discrete diffusion model (DM) for vison-language tasks.
+      </h2>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+Modern Vision-Language Models (VLMs) can solve a wide range of tasks requiring visual reasoning. In real-world scenarios, desirable properties for VLMs include fast inference and controllable generation (e.g., constraining outputs to adhere to a desired format). However, existing autoregressive (AR) VLMs like LLaVA struggle in these aspects. Discrete diffusion models (DMs) offer a promising alternative, enabling parallel decoding for faster inference and bidirectional context for controllable generation through text-infilling. While effective in language-only settings, DMs' potential for multimodal tasks is underexplored. We introduce LaViDa, a family of VLMs built on DMs. We build LaViDa by equipping DMs with a vision encoder and jointly fine-tune the combined parts for multimodal instruction following. To address challenges encountered, LaViDa incorporates novel techniques such as complementary masking for effective training, prefix KV cache for efficient inference, and timestep shifting for high-quality sampling. Experiments show that LaViDa achieves competitive or superior performance to AR VLMs on multi-modal benchmarks such as MMMU, while offering unique advantages of DMs, including flexible speed-quality tradeoff, controllability, and bidirectional reasoning. On COCO captioning, LaViDa surpasses Open-LLaVa-Next-8B by +4.1 CIDEr with 1.92x speedup. On bidirectional tasks, it achieves +59% improvement on Constrained Poem Completion. These results demonstrate LaViDa as a strong alternative to AR VLMs. Code and models will be released in the camera-ready version.
+
+
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Model Architecture</h2>
+          <img src="./static/images/architecture.png">
+          <div class="content has-text-justified">
+<p>
+  LaViDa's model architecture follows a similar design to common AR VLMs like LLaVa. It consists of a vision encoder and a diffusion language model. These two parts are connected by a MLP projection network.
+</p>
+<p>
+  <strong>Vision Encoder:</strong> The input image is resized into multiple views, encoded by a vision encoder, pooled, and projected into a compact visual context sequence.
+</p>
+<p>
+  <strong>Diffusion Language Model:</strong> A non-causal Transformer processes the visual context, prompt, and masked response to generate the final output using a diffusion-based decoding objective.
+</p>
+
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Technical Design</h2>
+          <img src="./static/images/design.png">
+          <div class="content has-text-justified">
+<p>
+  LaViDa improves the efficiency and quality of diffusion-based vision-language modeling through complementary masking and a cacheable inference scheme.
+</p>
+<p>
+  <strong>Complementary Masking:</strong> To ensure all tokens contribute to training and improve gradient alignment with vision features, LaViDa uses two disjoint masked sequences per sample, boosting sample efficiency and encoder supervision.
+</p>
+<p>
+  <strong>Prefix-DLM Inference:</strong> During inference, LaViDa gradually unmasks tokens in discrete steps while caching visual and prompt representations using a prefix-style attention mask, significantly speeding up decoding compared to standard diffusion models.
+</p>
+
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered" style="width: 100%">
+          <div class="column is-full-width" style="width: 100%">
+            <h2 class="title is-3">Highlights</h2>
+            <img src="./static/images/res1.png">
+            <div class="content has-text-justified">
+<p>
+  LaViDa provides better control and faster decoding than autoregressive (AR) vision-language models through flexible generation and tunable speed–quality tradeoffs.
+</p>
+<p>
+  <strong>Controllable Generation:</strong> LaViDa variants accurately follow structural constraints (e.g., poem lines) and allow flexible token allocation, unlike AR models which find it hard to follow the constraints.
+</p>
+<p>
+  <strong>Speed–Quality Tradeoff:</strong> By adjusting the number of diffusion steps, LaViDa enables dynamic balancing between inference latency and output quality on tasks like image captioning.
+</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section>
+
+
+    <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered" style="width: 100%">
+          <div class="column is-full-width" style="width: 100%">
+            <h2 class="title is-3">More Usecases</h2>
+            <img src="./static/images/res2.png">
+            <div class="content has-text-justified">
+<p>
+  LaViDa offers unparalled flexibility in controllable generation. We showcase some creative applications such as structured data extraction, text editing, and script writing.
+
+</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section>
+
+
+
+
+  <!-- <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Related Links</h2>
+
+            <div class="content has-text-justified">
+              <p>
+                There's a wonderful project called <a href="">SatMAE</a> that also pretrains models for geospatial
+                imagery, particularly multi-modal spatiotemporal data -- check out that project if it fits your use
+                case! Also, <span class="dnerf">Scale-MAE</span> and SatMAE should be able to be combined for
+                multi-scale multi-modal
+                spatiotemporal data, but we haven't tried it yet ourselves. Let us know if you do!
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section> -->
+
+
+  <!-- <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@InProceedings{ScaleMAE_2023_ICCV,
+    author    = {Reed, Colorado J and Gupta, Ritwik and Li, Shufan and Brockman, Sarah and Funk, Christopher and Clipp, Brian and Keutzer, Kurt and Candido, Salvatore and Uyttendaele, Matt and Darrell, Trevor},
+    title     = {Scale-MAE: A Scale-Aware Masked Autoencoder for Multiscale Geospatial Representation Learning},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {4088-4099}
+}</code></pre>
+    </div>
+  </section> -->
+
+
+  <footer class="footer">
+    <div class="container">
+      <!-- <div class="content has-text-centered">
+        <a class="icon-link" href="https://arxiv.org/abs/2212.14532">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/bair-climate-initiative/scale-mae/" class="external-link"
+          disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div> -->
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This website came from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies project website
+                template</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

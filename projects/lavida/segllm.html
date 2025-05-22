@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Round Segmentation Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            gap: 10px;
+            height: 500px;
+        }
+
+        .column {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .imageSelector {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            max-height: 500px;
+            overflow-y: auto;
+            justify-content: space-around; /* or space-between */
+        }
+
+        .imageSelector img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            object-fit: cover;
+            transition: border-color 0.3s ease, opacity 0.3s ease;
+        }
+
+        .imageSelector img.selected {
+            border-color: orange;
+            border-width: 3px;
+            opacity: 1;
+        }
+
+        .imageSelector img:hover {
+            border-color: #007bff;
+            opacity: 1;
+        }
+
+        .selected {
+            border-color: #007bff;
+        }
+
+        #modelOutput {
+            flex: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-height: 500px;
+        }
+        
+
+        #outputImage {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #userInput {
+            flex: 4;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .chat-bubble-container {
+            display: flex;
+            align-items: flex-start;
+            margin: 10px 0;
+            opacity: 0;
+            animation: fadeIn var(--animation-speed, 0.5s) forwards;
+        }
+
+        .chat-bubble {
+            padding: 10px;
+            border-radius: 12px;
+            max-width: 80%;
+            position: relative;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-bubble:hover {
+            background-color: #d3d3f3;
+        }
+
+        .user-bubble {
+            background-color: #d9f7be;
+            align-self: flex-end;
+        }
+
+        .model-bubble {
+            background-color: #e6e6fa;
+            align-self: flex-start;
+        }
+
+        .user-bubble-container {
+            justify-content: flex-end;
+        }
+
+        .model-bubble-container {
+            justify-content: flex-start;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #fff;
+        }
+
+        .robot-avatar {
+            background-image: url('segllm/robot.png');
+            background-size: cover;
+            border-radius: 0%;
+            background-color: #fff;
+        }
+        .human-avatar {
+            background-image: url('segllm/person.png');
+            background-size: cover;
+            border-radius: 0%;
+            background-color: #fff;
+        }
+
+        .reference-mask {
+            display: block;
+            margin-top: 5px;
+            max-width: 100%;
+            max-height: 100px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .reference-mask:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Interactive Multi-Round Segmentation Demo</h1>
+
+<div class="container">
+    <div class="column imageSelector"></div>
+    <div class="column" id="modelOutput">
+        <img id="outputImage" src="segllm/input1.png" alt="Model Output">
+    </div>
+    <div class="column" id="userInput"></div>
+</div>
+
+<script>
+    // Control the speed of animation and the delay between each round
+    const animationSpeed = 0.7; // Controls the speed of the fade-in animation in seconds
+    const roundDelay = 1500; // Delay between each round in milliseconds
+
+    document.documentElement.style.setProperty('--animation-speed', `${animationSpeed}s`);
+
+    // Updated sample configuration with six rounds for the first example
+    var config = [
+        {
+            "base_image_url": "segllm/input1.png",
+            "rounds": [
+                {"from": "user", "ref_mask_url": "", "text": "Segment the person wearing glasses."},
+                {"from": "model", "output_mask_url": "segllm/image1.png", "text": "segmented"},
+                {"from": "user", "ref_mask_url": "segllm/image.png", "text": "Segment his hair."},
+                {"from": "model", "output_mask_url": "segllm/image2.png", "text": " segmented"},
+                {"from": "user", "ref_mask_url": "segllm/image.png", "text": "Segment the person to his right."},
+                {"from": "model", "output_mask_url": "segllm/image3.png", "text": " segmented"},
+                {"from": "user", "ref_mask_url": "segllm/girl.png", "text": "Segment the bag that she is holding"},
+                {"from": "model", "output_mask_url": "segllm/image4.png", "text": " segmented"}
+            ]
+        },
+    //     {
+    //     "base_image_url": "segllm/input_1.jpg",
+    //     "rounds": [
+    //         {"from": "user", "ref_mask_url": "", "text": "Segment the person wearing glasses."},
+    //         {"from": "model", "output_mask_url": "segllm/input_1_out_mask_1.png", "text": "segmented"},
+    //         {"from": "user", "ref_mask_url": "segllm/input_1_ref_mask_1.png", "text": "Segment his hair."},
+    //         {"from": "model", "output_mask_url": "segllm/input_1_out_mask_2.png", "text": " segmented"},
+    //         {"from": "user", "ref_mask_url": "segllm/input_1_ref_mask_1.png", "text": "Segment the person to his right."},
+    //         {"from": "model", "output_mask_url": "segllm/input_1_out_mask_3.png", "text": " segmented"},
+    //         {"from": "user", "ref_mask_url": "segllm/input_1_ref_mask_3.png", "text": "Segment the bag that she is holding."},
+    //         {"from": "model", "output_mask_url": "segllm/input_1_out_mask_4.png", "text": " segmented"}
+    //     ]
+    // },
+    {
+        "base_image_url": "segllm/input_2.jpg",
+        "rounds": [
+            {"from": "user", "ref_mask_url": "", "text": "Segment John Mayer."},
+            {"from": "model", "output_mask_url": "segllm/input_2_out_mask_1.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "", "text": "Segment the famous British singer."},
+            {"from": "model", "output_mask_url": "segllm/input_2_out_mask_2.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "segllm/input_2_ref_mask_1.png", "text": "Segment the guitar played by instance 1."},
+            {"from": "model", "output_mask_url": "segllm/input_2_out_mask_3.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "segllm/input_2_ref_mask_2.png", "text": "Segment the guitar played by instance 2."},
+            {"from": "model", "output_mask_url": "segllm/input_2_out_mask_4.png", "text": " segmented"}
+        ]
+    },
+    {
+        "base_image_url": "segllm/input_3.jpg",
+        "rounds": [
+            {"from": "user", "ref_mask_url": "", "text": "Segment the man."},
+            {"from": "model", "output_mask_url": "segllm/input_3_out_mask_1.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "segllm/input_3_ref_mask_1.png", "text": "Segment the the other person."},
+            {"from": "model", "output_mask_url": "segllm/input_3_out_mask_2.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "segllm/input_3_ref_mask_2.png", "text": "Segment object that instance 2 is holding."},
+            {"from": "model", "output_mask_url": "segllm/input_3_out_mask_3.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "segllm/input_3_ref_mask_1.png", "text": "Segment the arm of instance 1."},
+            {"from": "model", "output_mask_url": "segllm/input_3_out_mask_4.png", "text": " segmented"}
+        ]
+    },
+    {
+        "base_image_url": "segllm/input_4.jpg",
+        "rounds": [
+            {"from": "user", "ref_mask_url": "", "text": "Segment the batter."},
+            {"from": "model", "output_mask_url": "segllm/input_4_out_mask_1.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "", "text": "Segment the catcher."},
+            {"from": "model", "output_mask_url": "segllm/input_4_out_mask_2.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "segllm/input_4_ref_mask_1.png", "text": "Segment the helmet of instance 1."},
+            {"from": "model", "output_mask_url": "segllm/input_4_out_mask_3.png", "text": " segmented"},
+            {"from": "user", "ref_mask_url": "segllm/input_4_ref_mask_2.png", "text": "Segment the helmet of instance 2."},
+            {"from": "model", "output_mask_url": "segllm/input_4_out_mask_4.png", "text": " segmented"}
+        ]
+    }
+
+    ];
+
+    let currentConfigIndex = 0;
+    let currentRoundIndex = 0;
+    let roundTimeout;
+
+    function init() {
+        preloadImages();
+        displayImages();
+        displayRound();
+    }
+
+    function preloadImages() {
+        config.forEach(item => {
+            const imagesToPreload = [item.base_image_url];
+            item.rounds.forEach(round => {
+                if (round.output_mask_url) imagesToPreload.push(round.output_mask_url);
+                if (round.ref_mask_url) imagesToPreload.push(round.ref_mask_url);
+            });
+            imagesToPreload.forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        });
+    }
+
+    function displayImages() {
+        config.forEach((item, index) => {
+            const img = $("<img>")
+                .attr("src", item.base_image_url)
+                .addClass(index === 0 ? "selected" : "")
+                .on("click", () => selectImage(index));
+            $(".imageSelector").append(img);
+        });
+    }
+
+    function selectImage(index) {
+        // Clear pending animations and timeouts
+        clearTimeout(roundTimeout);
+        $("#outputImage").stop(true, true);
+        $("#userInput").stop(true, true);
+
+        $(".imageSelector img").removeClass("selected");
+        $(".imageSelector img").eq(index).addClass("selected");
+        currentConfigIndex = index;
+        currentRoundIndex = 0;
+        $("#userInput").empty();
+        $("#outputImage").css("opacity", 0);
+        setTimeout(() => {
+            $("#outputImage").attr("src", config[currentConfigIndex].base_image_url).css("opacity", 1);
+        }, 300);
+        displayRound();
+    }
+
+    function generateRandomColorImage() {
+        const canvas = document.createElement("canvas");
+        canvas.width = 128;
+        canvas.height = 128;
+        const context = canvas.getContext("2d");
+        const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+        context.fillStyle = randomColor;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL();
+    }
+
+    function displayRound() {
+        const round = config[currentConfigIndex].rounds[currentRoundIndex];
+        if (round.from === "user") {
+            addChatBubble("user", round.text, round.ref_mask_url);
+            currentRoundIndex++;
+            displayRound();
+        } else if (round.from === "model") {
+            roundTimeout = setTimeout(() => {
+                addChatBubble("model", round.text, round.output_mask_url);
+                $("#outputImage").css("opacity", 0);
+                $("#outputImage").stop(true, true); // Clear animation queue
+                setTimeout(() => {
+                    $("#outputImage").attr("src", round.output_mask_url || config[currentConfigIndex].base_image_url).css("opacity", 1);
+                }, 300);
+                currentRoundIndex++;
+                if (currentRoundIndex < config[currentConfigIndex].rounds.length) {
+                    roundTimeout = setTimeout(displayRound, roundDelay);
+                } else {
+                    // Automatically select the next image if the sequence is complete
+                    currentConfigIndex = (currentConfigIndex + 1) % config.length;
+                    setTimeout(()=>{ selectImage(currentConfigIndex);}, roundDelay * 2);
+
+                }
+            }, roundDelay);
+        }
+    }
+
+    function addChatBubble(type, text, imageUrl) {
+        const container = $("<div>")
+            .addClass("chat-bubble-container")
+            .addClass(type === "user" ? "user-bubble-container" : "model-bubble-container");
+
+        const avatar = $("<div>")
+            .addClass("avatar")
+            .addClass(type === "model" ? "robot-avatar" : "human-avatar");
+
+        const bubble = $("<div>")
+            .addClass("chat-bubble")
+            .addClass(type === "user" ? "user-bubble" : "model-bubble")
+            .text(text)
+            .on("click", () => {
+                if (imageUrl) {
+                    $("#outputImage").css("opacity", 0);
+                    $("#outputImage").stop(true, true); // Clear animation queue
+                    setTimeout(() => {
+                        $("#outputImage").attr("src", imageUrl).css("opacity", 1);
+                    }, 300);
+                }
+            });
+
+        if (imageUrl) {
+            const img = $("<img>")
+                .attr("src", imageUrl)
+                .addClass("reference-mask")
+                .on("click", () => {
+                    $("#outputImage").css("opacity", 0);
+                    $("#outputImage").stop(true, true); // Clear animation queue
+                    setTimeout(() => {
+                        $("#outputImage").attr("src", imageUrl).css("opacity", 1);
+                    }, 100);
+                });
+            bubble.append(img);
+        }
+
+        container.append(type === "user" ? bubble : avatar);
+        container.append(type === "user" ? avatar : bubble);
+
+        $("#userInput").append(container);
+        setTimeout(() => {
+            $("#userInput").animate({
+                scrollTop: $("#userInput")[0].scrollHeight + $("#userInput")[0].offsetHeight * 2
+            }, 500);
+        }, 300);
+    }
+
+    $(document).ready(init);
+</script>
+
+</body>
+</html>
