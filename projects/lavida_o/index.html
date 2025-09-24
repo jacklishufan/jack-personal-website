@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="LaViDa-O: Elastic Masked Diffusion Models for Unified Multimodal Understanding and Generation">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LaViDa</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- <h1 class="title is-1 publication-title">LaViDa</h1> -->
+            <h2 class="title is-2 publication-title">LaViDa-O: Elastic Large Masked Diffusion Models for Unified Multimodal Understanding and Generation</h2>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="http://homepage.jackli.org/">Shufan Li*</a><sup>1,2</sup>,</span>
+             <!-- <span class="author-block">
+                <a href="https://tech-ai.panasonic.com/en/researcher_introduction/048/"> Konstantinos Kallidromitis*</a><sup>2</sup>,
+              </span> -->
+            <!-- <span class="author-block">
+                <a href="https://sites.google.com/view/hbansal">Hritik Bansal*</a><sup>1</sup>,
+              </span> -->
+            <!-- <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=MYRUJkUAAAAJ&hl=en">Akash Gokul*</a><sup>3</sup>,
+              </span> -->
+           <!-- <span class="author-block">
+                <a href="https://www.linkedin.com/in/yusuke-kato-b1a875175/?originalSubdomain=jpt">Yusuke Kato</a><sup>2</sup>,
+              </span> -->
+              <!-- <span class="author-block">
+                <a href="https://kazukikozuka.net">Kazuki Kozuka</a><sup>2</sup>,
+              </span> -->
+<!-- Jiuxiang Gu, Kangning Liu, Zhe Lin, Zijun Wei, -->
+               <span class="author-block">
+                <a href="https://gujiuxiang.com">Jiuxiang Gu</a><sup>1</sup>,
+              </span>
+                             <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=F3F2qAkAAAAJ&hl=en"> Kangning Liu</a><sup>1</sup>,
+              </span>
+                            <span class="author-block">
+                <a href="https://sites.google.com/site/zhelin625/home/">Zhe Lin</a><sup>1</sup>,
+              </span>
+              <br>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=en&user=8l3bFYYAAAAJ&view_op=list_works&sortby=pubdate"> Zijun Wei</a><sup>1</sup>,
+              </span>
+
+              <span class="author-block">
+                <a href="https://research.adobe.com/person/jason-kuen/">Jason Kuen</a><sup>1</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://aditya-grover.github.io">Aditya Grover</a><sup>2</sup>
+              </span>
+
+              <!-- <span class="author-block">
+                <a href="https://web.cs.ucla.edu/~kwchang/">Kai-Wei Chang</a><sup>3</sup>,
+              </span> -->
+              <!-- <br> -->
+
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Adobe</span>
+              <span class="author-block"><sup>2</sup>UCLA</span>
+              <!-- <span class="author-block"><sup>3</sup>Salesforce Research</span>
+              <span class="author-block"><sup>4</sup>Adobe Research</span> -->
+            </div>
+
+            <!-- <h2 class="title is-4 publication-title" style="padding-top: 0.5em">ICCV 2023 Best Paper Nominee</h2> -->
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2509.19244"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="#"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code and Models (Coming Soon)</span>
+                  </a>
+                </span>
+                
+                <!-- Presentation Link. --->
+                <!-- <span class="link-block">
+                  <a href="https://drive.google.com/file/d/1ylt7KsLVR8IaBbhRLRL-2DRwiREPRy1r/view?usp=sharing"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-chalkboard"></i>
+                    </span>
+                    <span>Slides</span>
+                  </a>
+                </span> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="./static/images/teaser.png" height="100%"></img>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">LaViD-O</span> is a unified multi-modal masked diffusion model (MDM) capbale of image Understanding, image generation, image editing, object grounding, and interleaved generation.
+      </h2>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+We propose Lavida-O, a unified Masked Diffusion Model (MDM) for multimodal understanding and generation. Unlike existing multimodal MDMs such as MMaDa and Muddit which only support simple image-level understanding tasks and low-resolution image generation, Lavida-O presents a single framework that enables image-level understanding, object grounding, image editing, and high-resolution (1024px) text-to-image synthesis. Lavida-O incorporates a novel Elastic Mixture-of-Transformers (Elastic-MoT) architecture that couples a lightweight generation branch with a larger understanding branch, supported by token compression, universal text conditioning and stratified sampling for efficient and high-quality generation. Lavida-O further incorporates planning and iterative self-reflection in image generation and editing tasks, seamlessly boosting generation quality with its understanding capabilities. Lavida-O achieves state-of-the-art performance on a wide range of benchmarks including RefCOCO object grounding, GenEval text-to-image generation, and ImgEdit image editing, outperforming existing autoregressive models and continuous diffusion models such as Qwen2.5-VL and FluxKontext-dev, while offering considerable speedup at inference. These advances establish Lavida-O as a new paradigm for scalable multimodal reasoning and generation.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Model Architecture</h2>
+          <img src="./static/images/architecture.png">
+          <div class="content has-text-justified">
+<p>
+  LaViDa-O employs a Senmantic-Encoder and VQ-Enocder to enocde input images. The output images are represented by discrete VQ tokenize, allowing seamless integration with text tokens for unified understanding and generation.
+
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Elastic-MoT</h2>
+          <img src="./static/images/Elastic-MoT.png">
+          <div class="content has-text-justified">
+<p>
+  LaViDa-O employs a flexible Elastic-MoT design, with a lightweight generation branch and a larger understanding branch. The two branches can be flexibly activated depending on the tasks to optimize training and inference efficiency.
+</p>
+
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+    <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Interleaved Reasoning with Planning and Reflection</h2>
+          <img src="./static/images/interleaved.png" style="transform: scale(0.8); display: block; margin: 0 auto;">
+          <div class="content has-text-justified">
+<p>
+  LaViDa-O introduces a novel paradigm that explicitly leverages the understanding capabilities of a unified model to improve its generation through planning and self-reflection. This design greatly improves the instruction following capabilities in text-to-image generation and image editing tasks.
+</p>
+
+          </div>
+        </div>
+      </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered" style="width: 100%">
+          <div class="column is-full-width" style="width: 100%">
+            <h2 class="title is-3">Inference Speed</h2>
+            <img src="./static/images/speed.png">
+            <div class="content has-text-justified">
+<p>
+ Thanks to the parallel decoding process of diffusion models and the efficient Elastic-MoT architecture, LaViDa-O achieves significantly faster inference speed than existing autoregressive models (e.g., Qwen2.5-VL) and continuous diffusion models (e.g., FluxKontext-dev) on various tasks. Most notably, it achiecevs a 6.8x speedup over Qwen2.5-VL on object grounding.
+</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section>
+
+
+    <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered" style="width: 100%">
+          <div class="column is-full-width" style="width: 100%">
+            <h2 class="title is-3">More Results</h2>
+            <img src="./static/images/T2iDemo-5.png">
+             <img src="./static/images/EditingDemo-5.png">
+            <div class="content has-text-justified">
+<p>
+
+</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section>
+
+
+
+
+  <!-- <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered">
+
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Related Links</h2>
+
+            <div class="content has-text-justified">
+              <p>
+                There's a wonderful project called <a href="">SatMAE</a> that also pretrains models for geospatial
+                imagery, particularly multi-modal spatiotemporal data -- check out that project if it fits your use
+                case! Also, <span class="dnerf">Scale-MAE</span> and SatMAE should be able to be combined for
+                multi-scale multi-modal
+                spatiotemporal data, but we haven't tried it yet ourselves. Let us know if you do!
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </section> -->
+
+
+  <!-- <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@InProceedings{ScaleMAE_2023_ICCV,
+    author    = {Reed, Colorado J and Gupta, Ritwik and Li, Shufan and Brockman, Sarah and Funk, Christopher and Clipp, Brian and Keutzer, Kurt and Candido, Salvatore and Uyttendaele, Matt and Darrell, Trevor},
+    title     = {Scale-MAE: A Scale-Aware Masked Autoencoder for Multiscale Geospatial Representation Learning},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {4088-4099}
+}</code></pre>
+    </div>
+  </section> -->
+
+
+  <footer class="footer">
+    <div class="container">
+      <!-- <div class="content has-text-centered">
+        <a class="icon-link" href="https://arxiv.org/abs/2212.14532">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/bair-climate-initiative/scale-mae/" class="external-link"
+          disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div> -->
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This website came from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies project website
+                template</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

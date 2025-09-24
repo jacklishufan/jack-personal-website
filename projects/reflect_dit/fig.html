@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iterative Generation with Feedback</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .layout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .box {
+      width: 150px;
+      height: 150px;
+      border: 3px dashed #bbb;
+      border-radius: 12px;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.9em;
+      text-align: center;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.9);
+      animation: fadeIn 0.6s forwards;
+    }
+
+    .box.correct {
+      border-color: #2e7d32;
+      background: #c8e6c9;
+    }
+
+    .box.moving {
+      transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .box-label {
+      margin-top: 10px;
+      font-size: 0.8em;
+      text-align: center;
+    }
+
+    .arrow {
+      font-size: 2em;
+      color: #888;
+    }
+
+    .dit-box {
+      padding: 40px 20px;
+      border: 3px solid #2196f3;
+      border-radius: 20px;
+      background: #e3f2fd;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .feedback {
+      position: absolute;
+      bottom: -40px;
+      font-size: 0.8em;
+      background: #ffcdd2;
+      padding: 5px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .feedback.correct {
+      background: #c8e6c9;
+    }
+
+    .prompt {
+      text-align: center;
+      font-size: 1.5em;
+      background: #fff8e1;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .context {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #contextArea {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      margin-top: 10px;
+      min-height: 160px;
+      min-width: 400px;
+      border: 2px dashed #aaa;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+    }
+
+    .gen-sequence {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="prompt">Prompt: "a photo of an apple above a tv"</div>
+
+  <div class="layout">
+    <div class="context">
+      <div><strong>Context</strong></div>
+      <div id="contextArea"></div>
+    </div>
+
+    <div class="arrow">→</div>
+    <div class="dit-box">DiT</div>
+    <div class="arrow">→</div>
+
+    <div id="generationZone" class="gen-sequence"></div>
+  </div>
+
+  <div style="text-align: center;">
+    <button onclick="generateNext()">Generate Next</button>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        img: 'Generation N-3',
+        feedback: 'there should only be one apple',
+        correct: false
+      },
+      {
+        img: 'Generation N-2',
+        feedback: 'apple is below the tv',
+        correct: false
+      },
+      {
+        img: 'Generation N-1',
+        feedback: 'apple is inside the tv',
+        correct: false
+      },
+      {
+        img: 'Generation N',
+        feedback: '✓ matches prompt',
+        correct: true
+      }
+    ];
+
+    let current = 0;
+
+    function generateBox(step) {
+      const box = document.createElement('div');
+      box.className = 'box' + (step.correct ? ' correct' : '');
+      box.innerText = step.img;
+
+      const feedback = document.createElement('div');
+      feedback.className = 'feedback' + (step.correct ? ' correct' : '');
+      feedback.innerText = step.feedback;
+      box.appendChild(feedback);
+
+      return box;
+    }
+
+    function generateNext() {
+      if (current >= steps.length) return;
+
+      const zone = document.getElementById('generationZone');
+      const ctx = document.getElementById('contextArea');
+      const step = steps[current];
+      const box = generateBox(step);
+      zone.appendChild(box);
+
+      // Wait for fade-in to complete before deciding outcome
+      setTimeout(() => {
+        if (step.correct) {
+          const feedback = box.querySelector('.feedback');
+          feedback.innerText = '✓ Image accepted';
+          feedback.classList.add('correct');
+        } else {
+          // Add transition class for movement
+          box.classList.add('moving');
+
+          // Calculate destination box location (optional - placeholder move)
+          const rectStart = box.getBoundingClientRect();
+          ctx.appendChild(box); // Move DOM first to destination
+          const rectEnd = box.getBoundingClientRect();
+
+          const dx = rectStart.left - rectEnd.left;
+          const dy = rectStart.top - rectEnd.top;
+
+          box.style.transform = `translate(${dx}px, ${dy}px)`;
+          box.style.opacity = 0;
+
+          // Force browser to recalc layout
+          requestAnimationFrame(() => {
+            box.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+            box.style.transform = 'translate(0, 0)';
+            box.style.opacity = 1;
+          });
+        }
+      }, 600); // after fadeIn
+
+      current++;
+    }
+  </script>
+</body>
+</html>
