@@ -206,6 +206,23 @@
       width: 0%;
       transition: width 0.3s ease;
     }
+
+      .demo-notice {
+      position: fixed;
+      left: 50%;
+      bottom: 8px;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.95);
+      color: #444;
+      font-size: 14px;
+      padding: 4px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      z-index: 999;
+      pointer-events: none;
+      font-style: italic;
+    }
+
   </style>
 </head>
 <body>
@@ -261,24 +278,24 @@ ships <span class="mask">[mask]</span><span class="mask">[mask]</span><span clas
 
   <!-- Tab 3: Planning T2I -->
   <div class="tab-content" id="planning-t2i">
-    <div class="planning-row">
-      <div class="planning-title">Text-to-Image with Planning</div>
+    <div class="planning-row" style="flex-direction: column;">
+      <div class="title">Text-to-Image with Planning</div>
       <div class="timeline" id="planningt2i-timeline"></div>
     </div>
   </div>
 
   <!-- Tab 4: Planning Editing -->
   <div class="tab-content" id="planning-edit">
-    <div class="planning-row">
-      <div class="planning-title">Image-Editing with Planning</div>
+    <div class="planning-row" style="flex-direction: column;">
+      <div class="title">Image-Editing with Planning</div>
       <div class="timeline" id="planning-timeline"></div>
     </div>
   </div>
 
   <!-- Tab 5: Reflection -->
   <div class="tab-content" id="reflection">
-    <div class="planning-row">
-      <div class="planning-title">Self-Reflection</div>
+    <div class="planning-row" style="flex-direction: column;">
+      <div class="title">Self-Reflection</div>
       <div class="timeline" id="reflection-timeline"></div>
     </div>
   </div>
@@ -288,6 +305,10 @@ ships <span class="mask">[mask]</span><span class="mask">[mask]</span><span clas
     <div class="progress-fill" id="progress-fill"></div>
   </div>
 
+    <div class="demo-notice">
+    *demo accelerated for better viewing experience
+  </div>
+  
   <script>
     // Global state
     let currentTabIndex = 0;
