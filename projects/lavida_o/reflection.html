@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reflection + Planning Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .row {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .title {
+      flex: 0 0 120px;
+      font-weight: bold;
+      text-align: right;
+      margin-right: 10px;
+    }
+    .timeline {
+      display: flex;
+      gap: 20px;
+      flex: 1;
+    }
+    .round {
+      min-width: 220px;
+      max-width: 260px;
+      border-radius: 10px;
+      padding: 10px;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+    }
+    .round.user {
+      background: #d4f7d0;
+    }
+    .round.gpt {
+      background: #e6e6e6;
+    }
+    .round.visible {
+      opacity: 1;
+    }
+    .round img {
+      max-width: 80%;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Reflection row -->
+<div class="row" style="align-items: center;">
+    <div class="title">Text-to-Image with Planning</div>
+    <div class="timeline" id="planningt2i"></div>
+</div>
+
+<!-- Planning row -->
+<div class="row" style="align-items: center;">
+    <div class="title">Image-Editing with Planning</div>
+    <div class="timeline" id="planning"></div>
+</div>
+
+
+<!-- Planning row -->
+<div class="row" style="align-items: center;">
+    <div class="title">Image-Editing with Planning</div>
+    <div class="timeline" id="reflection"></div>
+</div>
+
+  <script>
+    // Example data
+    const planningt2iData = [
+      {"from":"user", "content":"<b>User:</b> an image of an horse above an astronaut on the surface of mars, dramatic lighting, ultra-realistic, volumetriclighting, backlight", "image":""},
+      {"from":"gpt", "content":"<b>LaViDa-O:</b> Sure I should place the objects in the following manner: <span style='color:red'>horse [216][0][812][720] </span> <span style='color:yellow'>astronaut [388][688][644][1020] </span> ", "image":"ours/plan1.jpeg"},
+      {"from":"gpt", "content":"<b>LaViDa-O:</b>", "image":"ours/plan2.jpeg"}
+    ];
+    const planningData = [
+      {"from":"user", "content":"<b>User:</b> Replace the dog with a robot.", "image":"ours/plan5.jpeg"},
+      {"from":"gpt", "content":"<b>LaViDa-O:</b> Sure I should consider replacing the objects in these locations : <span style='color:red'> dog (to be replaced with robot) [388][232][1024][940] </span>", "image":"ours/plan6.jpeg"},
+      {"from":"gpt", "content":"<b>LaViDa-O:</b> ", "image":"ours/plan7.jpeg"}
+    ];
+    const reflectionData = [
+      {"from":"user", "content":"<b>User:</b> a photo of three apples", "image":""},
+      {"from":"gpt", "content":"<b>LaViDa-O:</b>This image is incorrect. There should be 3 apple, but only 2 exists in image. I should correct this.", "image":"ours/plan3.jpeg"},
+      {"from":"gpt", "content":"<b>LaViDa-O:</b> ", "image":"ours/plan4.jpeg"}
+    ];
+
+    function showRoundsSequentially(containerId, rounds, delay=1500) {
+      const container = document.getElementById(containerId);
+      rounds.forEach((r, i) => {
+        const div = document.createElement("div");
+        div.className = "round " + r.from;
+        div.innerHTML = r.content || "";
+        if (r.image) {
+          const img = document.createElement("img");
+          img.src = r.image;
+          div.appendChild(img);
+        }
+        container.appendChild(div);
+        setTimeout(() => {
+          div.classList.add("visible");
+        }, i * delay);
+      });
+    }
+
+    showRoundsSequentially("planningt2i", planningt2iData);
+    showRoundsSequentially("planning", planningData);
+    showRoundsSequentially("reflection", reflectionData);
+  </script>
+</body>
+</html>

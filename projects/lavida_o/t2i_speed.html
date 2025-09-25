@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Generation + Detection Speed Comparison</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
+      font-family: sans-serif;
+      margin: 40px;
+    }
+    .row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+    }
+    .column {
+      width: 400px;
+    }
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .image-container {
+      display: grid;
+      gap: 10px;
+    }
+    .image-container.grid-2x4 {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
+    .image-container.grid-1x4 {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr;
+    }
+    .image-container img {
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+    .image-container img.visible {
+      opacity: 1;
+    }
+    /* Bounding box visualization */
+    .bbox-container {
+      position: relative;
+      width: 100%;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .bbox-container img {
+      width: 100%;
+      display: block;
+    }
+    .bbox {
+      position: absolute;
+      border: 4px solid yellow;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+    /* Text box */
+    .textbox {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      background: #f9f9f9;
+      white-space: pre-line;
+      font-family: monospace;
+    }
+    .mask {
+      background-color: #007bff;
+      color: white;
+      padding: 0 4px;
+      border-radius: 3px;
+      animation: flash 0.2s alternate infinite;
+    }
+    @keyframes flash {
+      from { opacity: 1; }
+      to { opacity: 0.3; }
+    }
+  </style>
+
+    <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+    .column {
+      width: 500px;
+    }
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .dialogue {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      line-height: 1.4;
+    }
+    .bubble.user {
+      align-self: flex-start;
+      background: #d4f7d0;
+    }
+    .bubble.gpt {
+      align-self: flex-end;
+      background: #e6e6e6;
+    }
+    .bubble img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Row 1: Image generation -->
+  <div class="row">
+    <div class="column">
+      <div class="title">LaViDa-O (18s / image)</div>
+      <div class="image-container grid-2x4" id="ours"></div>
+    </div>
+    <div class="column">
+      <div class="title">BAGEL (45s / image)</div>
+      <div class="image-container grid-1x4" id="theirs"></div>
+    </div>
+  </div>
+
+  <!-- Row 2: Bounding box generation -->
+  <div class="row">
+    <div class="column">
+      <div class="title">LaViDa-O (1 step detection)</div>
+      <div class="bbox-container" id="ours-detect">
+        <img id="ours-detect-img" src="" alt="Ours Detection">
+      </div>
+      <div class="textbox" id="ours-text">
+a cute dog <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+a boy <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+ships <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+      </div>
+    </div>
+    <div class="column">
+      <div class="title">Qwen2.5-VL (autoregressive)</div>
+      <div class="bbox-container" id="qwen-detect">
+        <img id="qwen-detect-img" src="" alt="Qwen Detection">
+      </div>
+      <div class="textbox" id="qwen-text"></div>
+    </div>
+  </div>
+
+  <script>
+    // Image generation comparison
+    const images_ours = [
+      "ours/1.jpeg","ours/2.jpeg","ours/3.jpeg","ours/4.jpeg",
+      "ours/5.jpeg","ours/6.jpeg","ours/7.jpeg","ours/8.jpeg"
+    ];
+    const images_theirs = [
+      "bagel/1.webp","bagel/2.jpeg","bagel/3.jpeg","bagel/4.jpeg"
+    ];
+    const factor = 20;
+    const latency_ours = 18 * 8 / factor;
+    const latency_theirs = 41 * 4 / factor;
+
+    function showImagesSequentially(containerId, images, totalLatency) {
+      const container = document.getElementById(containerId);
+      const interval = (totalLatency * 1000) / images.length;
+      images.forEach((src, i) => {
+        const img = document.createElement("img");
+        img.src = src;
+        container.appendChild(img);
+        setTimeout(() => {
+          img.classList.add("visible");
+        }, i * interval);
+      });
+    }
+    showImagesSequentially("ours", images_ours, latency_ours);
+    showImagesSequentially("theirs", images_theirs, latency_theirs);
+
+    // Detection comparison
+    const base_img_for_detection = "ours/tmp.jpg"; // replace with actual image URL
+    document.getElementById("ours-detect-img").src = base_img_for_detection;
+    document.getElementById("qwen-detect-img").src = base_img_for_detection;
+
+    // Ours bounding boxes (xyxy, raw size=1024)
+    const ours_boxes = [
+      {label:"dog", bbox:[552,620,1016,1012]},
+      {label:"boy", bbox:[204,564,524,1016]},
+      {label:"ships", bbox:[4,300,988,488]}
+    ];
+    // Qwen2.5-VL bounding boxes (xyxy, raw size=512)
+    const qwen_boxes = [
+      {label:"boy", bbox:[104,278,253,504]},
+      {label:"dog", bbox:[279,311,460,504]},
+      {label:"ships", bbox:[1,158,504,264]}
+    ];
+
+    // Utility to draw bboxes
+    function drawBoxes(containerId, imgId, boxes, rawSize) {
+    const container = document.getElementById(containerId);
+    const img = document.getElementById(imgId);
+    console.log("Draw Boxes", containerId, imgId, boxes, rawSize);
+    function scale() {
+        console.log("Sacle");
+        const w = img.clientWidth;
+        const h = img.clientHeight;
+        if (w === 0 || h === 0) {
+        console.warn("Image not sized yet:", img.src);
+        return;
+        }
+        boxes.forEach(b => {
+        const [x1,y1,x2,y2] = b.bbox;
+        const div = document.createElement("div");
+        div.className="bbox";
+        div.style.left = (x1 * w / rawSize) + "px";
+        div.style.top = (y1 * h / rawSize) + "px";
+        div.style.width = ((x2 - x1) * w / rawSize) + "px";
+        div.style.height = ((y2 - y1) * h / rawSize) + "px";
+        container.appendChild(div);
+        });
+    }
+
+    if (img.complete) {
+        scale(); // already loaded
+    } else {
+        img.onload = scale; // wait for load
+    }
+    }
+
+    // Animate Ours: replace masks and show boxes after 2s
+    setTimeout(()=>{
+      const oursText = document.getElementById("ours-text");
+      oursText.textContent =
+`
+a cute dog [552][620][1016][1012]
+a boy [204][564][524][1016]
+ships [4][300][988][488]`;
+      drawBoxes("ours-detect","ours-detect-img",ours_boxes,1024);
+    },1000);
+
+    // Animate Qwen: typewriter effect
+    const qwen_output = `
+[
+\t{"bbox_2d": [104, 278, 253, 504], "label": "boy"},
+\t{"bbox_2d": [279, 311, 460, 504], "label": "dog"},
+\t{"bbox_2d": [1, 158, 504, 264], "label": "ships"}
+]
+`;
+
+
+    const qwenBoxEl = document.getElementById("qwen-text");
+    let idx = 0;
+    let boxIdx = 0;
+    // Track when each box finishes
+    const boxEndIndices = [];
+    // Find the end index of each box line in qwen_output
+    let pos = 0;
+    const lines = qwen_output.split('\n');
+    lines.forEach((line, i) => {
+      if (line.includes('"bbox_2d"')) {
+        // End of this box line
+        boxEndIndices.push(pos + line.length);
+      }
+      pos += line.length + 1; // +1 for newline
+    });
+
+    function typeWriter() {
+      if (idx < qwen_output.length) {
+        qwenBoxEl.textContent += qwen_output[idx];
+        idx++;
+        // Show box when its line finishes
+        if (boxIdx < boxEndIndices.length && idx === boxEndIndices[boxIdx]) {
+          drawBoxes("qwen-detect", "qwen-detect-img", [qwen_boxes[boxIdx]], 512);
+          boxIdx++;
+        }
+        setTimeout(typeWriter, 30);
+      } else {
+        // Draw any remaining boxes (if needed)
+        if (boxIdx < qwen_boxes.length) {
+          for (; boxIdx < qwen_boxes.length; boxIdx++) {
+            drawBoxes("qwen-detect", "qwen-detect-img", [qwen_boxes[boxIdx]], 512);
+          }
+        }
+      }
+    }
+    setTimeout(typeWriter,500); // start after 0.5s
+  </script>
+
+
+
+
+</body>
+</html>
+

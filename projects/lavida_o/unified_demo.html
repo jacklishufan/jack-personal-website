@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LaViDa-O Comprehensive Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+    }
+    
+    /* Tab navigation */
+    .tab-container {
+      position: sticky;
+      top: 0;
+      background: white;
+      border-bottom: 2px solid #e0e0e0;
+      z-index: 100;
+    }
+    .tab-nav {
+      display: flex;
+      overflow-x: auto;
+      padding: 0 20px;
+    }
+    .tab-button {
+      flex: 1;
+      padding: 15px 25px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .tab-button.active {
+      color: #007bff;
+      border-bottom-color: #007bff;
+    }
+    .tab-button:hover {
+      background: #f0f0f0;
+    }
+    
+    /* Tab content */
+    .tab-content {
+      display: none;
+      padding: 40px;
+      min-height: 80vh;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Common styles */
+    .row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .column {
+      width: 40%;
+      min-width: 400px;
+    }
+    .title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    
+    /* Image generation styles */
+    .image-container {
+      display: grid;
+      gap: 10px;
+    }
+    .image-container.grid-2x4 {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+    }
+    .image-container.grid-1x4 {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr;
+    }
+    .image-container img {
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+    .image-container img.visible {
+      opacity: 1;
+    }
+    
+    /* Detection styles */
+    .bbox-container {
+      position: relative;
+      width: 40%;
+      margin: 0 auto;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .bbox-container img {
+      width: 100%;
+      display: block;
+    }
+    .bbox {
+      position: absolute;
+      border: 4px solid yellow;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+    .textbox {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      background: #f9f9f9;
+      white-space: pre-line;
+      font-family: monospace;
+    }
+    .mask {
+      background-color: #007bff;
+      color: white;
+      padding: 0 4px;
+      border-radius: 3px;
+      animation: flash 0.2s alternate infinite;
+    }
+    @keyframes flash {
+      from { opacity: 1; }
+      to { opacity: 0.3; }
+    }
+    
+    /* Planning/Reflection styles */
+    .timeline {
+      display: flex;
+      gap: 20px;
+      flex: 1;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+    .round {
+      min-width: 220px;
+      max-width: 260px;
+      border-radius: 10px;
+      padding: 15px;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.5s ease-in;
+      flex-shrink: 0;
+    }
+    .round.user {
+      background: #d4f7d0;
+    }
+    .round.gpt {
+      background: #e6e6e6;
+    }
+    .round.visible {
+      opacity: 1;
+    }
+    .round img {
+      max-width: 80%;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
+    
+    .planning-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .planning-title {
+      flex: 0 0 200px;
+      font-weight: bold;
+      text-align: right;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    
+    /* Progress indicator */
+    .progress-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 200px;
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #007bff;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tab Navigation -->
+  <div class="tab-container">
+    <div class="tab-nav">
+      <button class="tab-button active" data-tab="t2i">Text-to-Image Speed</button>
+      <button class="tab-button" data-tab="detection">Object Detection</button>
+      <button class="tab-button" data-tab="planning-t2i">Planning T2I</button>
+      <button class="tab-button" data-tab="planning-edit">Planning Editing</button>
+      <button class="tab-button" data-tab="reflection">Reflection</button>
+    </div>
+  </div>
+
+  <!-- Tab 1: Text-to-Image Speed -->
+  <div class="tab-content active" id="t2i">
+    <div class="row">
+      <div class="column">
+        <div class="title">LaViDa-O (18s / image)</div>
+        <div class="image-container grid-2x4" id="ours-t2i"></div>
+      </div>
+      <div class="column">
+        <div class="title">BAGEL (45s / image)</div>
+        <div class="image-container grid-1x4" id="theirs-t2i"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Object Detection -->
+  <div class="tab-content" id="detection">
+    <div class="row">
+      <div class="column">
+        <div class="title">LaViDa-O (1 step detection)</div>
+        <div class="bbox-container" id="ours-detect">
+          <img id="ours-detect-img" src="" alt="Ours Detection">
+        </div>
+        <div class="textbox" id="ours-text">
+a cute dog <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+a boy <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+ships <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+        </div>
+      </div>
+      <div class="column">
+        <div class="title">Qwen2.5-VL (autoregressive)</div>
+        <div class="bbox-container" id="qwen-detect">
+          <img id="qwen-detect-img" src="" alt="Qwen Detection">
+        </div>
+        <div class="textbox" id="qwen-text"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Planning T2I -->
+  <div class="tab-content" id="planning-t2i">
+    <div class="planning-row">
+      <div class="planning-title">Text-to-Image with Planning</div>
+      <div class="timeline" id="planningt2i-timeline"></div>
+    </div>
+  </div>
+
+  <!-- Tab 4: Planning Editing -->
+  <div class="tab-content" id="planning-edit">
+    <div class="planning-row">
+      <div class="planning-title">Image-Editing with Planning</div>
+      <div class="timeline" id="planning-timeline"></div>
+    </div>
+  </div>
+
+  <!-- Tab 5: Reflection -->
+  <div class="tab-content" id="reflection">
+    <div class="planning-row">
+      <div class="planning-title">Self-Reflection</div>
+      <div class="timeline" id="reflection-timeline"></div>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <script>
+    // Global state
+    let currentTabIndex = 0;
+    const tabs = ['t2i', 'detection', 'planning-t2i', 'planning-edit', 'reflection'];
+    const tabDurations = [8000, 6000, 4500, 4500, 4500]; // Duration for each tab in ms
+    let isAnimating = false;
+    let currentAnimation = null;
+
+    // Tab switching functionality
+    function switchTab(tabId, tabIndex) {
+      // Update tab buttons
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+      
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      
+      currentTabIndex = tabIndex;
+      
+      // Start animation for current tab
+      startTabAnimation(tabId);
+    }
+
+    // Manual tab click handlers
+    document.querySelectorAll('.tab-button').forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        if (currentAnimation) {
+          clearTimeout(currentAnimation);
+          currentAnimation = null;
+        }
+        isAnimating = false; // Reset animation state
+        switchTab(btn.dataset.tab, index);
+      });
+    });
+
+    // Animation functions
+    function startTabAnimation(tabId) {
+      if (isAnimating) return;
+      isAnimating = true;
+      
+      // Clear previous animations
+      clearAllAnimations();
+      
+      switch(tabId) {
+        case 't2i':
+          animateT2I();
+          break;
+        case 'detection':
+          animateDetection();
+          break;
+        case 'planning-t2i':
+          animatePlanningT2I();
+          break;
+        case 'planning-edit':
+          animatePlanningEdit();
+          break;
+        case 'reflection':
+          animateReflection();
+          break;
+      }
+      
+      // Auto-advance to next tab
+      currentAnimation = setTimeout(() => {
+        isAnimating = false;
+        const nextIndex = (currentTabIndex + 1) % tabs.length;
+        switchTab(tabs[nextIndex], nextIndex);
+      }, tabDurations[currentTabIndex]);
+      
+      // Update progress bar
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const progressFill = document.getElementById('progress-fill');
+      progressFill.style.width = '0%';
+      setTimeout(() => {
+        progressFill.style.transition = `width ${tabDurations[currentTabIndex]}ms linear`;
+        progressFill.style.width = '100%';
+      }, 100);
+    }
+
+    function clearAllAnimations() {
+      // Clear T2I images
+      ['ours-t2i', 'theirs-t2i'].forEach(id => {
+        const container = document.getElementById(id);
+        if (container) {
+          container.innerHTML = '';
+        }
+      });
+      
+      // Clear detection boxes and text
+      ['ours-detect', 'qwen-detect'].forEach(id => {
+        const container = document.getElementById(id);
+        if (container) {
+          container.querySelectorAll('.bbox').forEach(box => box.remove());
+        }
+      });
+      document.getElementById('ours-text').innerHTML = `
+a cute dog <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+a boy <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>
+ships <span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span><span class="mask">[mask]</span>`;
+      document.getElementById('qwen-text').textContent = '';
+      
+      // Clear planning timelines
+      ['planningt2i-timeline', 'planning-timeline', 'reflection-timeline'].forEach(id => {
+        const container = document.getElementById(id);
+        if (container) {
+          container.innerHTML = '';
+        }
+      });
+    }
+
+    // T2I Animation
+    function animateT2I() {
+      const images_ours = [
+        "ours/1.jpeg","ours/2.jpeg","ours/3.jpeg","ours/4.jpeg",
+        "ours/5.jpeg","ours/6.jpeg","ours/7.jpeg","ours/8.jpeg"
+      ];
+      const images_theirs = [
+        "bagel/1.webp","bagel/2.jpeg","bagel/3.jpeg","bagel/4.jpeg"
+      ];
+      const factor = 20;
+      const latency_ours = 18 * 8 / factor;
+      const latency_theirs = 41 * 4 / factor;
+
+      showImagesSequentially("ours-t2i", images_ours, latency_ours);
+      showImagesSequentially("theirs-t2i", images_theirs, latency_theirs);
+    }
+
+    function showImagesSequentially(containerId, images, totalLatency) {
+      const container = document.getElementById(containerId);
+      const interval = (totalLatency * 1000) / images.length;
+      images.forEach((src, i) => {
+        const img = document.createElement("img");
+        img.src = src;
+        container.appendChild(img);
+        setTimeout(() => {
+          img.classList.add("visible");
+        }, i * interval);
+      });
+    }
+
+    // Detection Animation
+    function animateDetection() {
+      const base_img_for_detection = "ours/tmp.jpg";
+      document.getElementById("ours-detect-img").src = base_img_for_detection;
+      document.getElementById("qwen-detect-img").src = base_img_for_detection;
+
+      const ours_boxes = [
+        {label:"dog", bbox:[552,620,1016,1012]},
+        {label:"boy", bbox:[204,564,524,1016]},
+        {label:"ships", bbox:[4,300,988,488]}
+      ];
+      const qwen_boxes = [
+        {label:"boy", bbox:[104,278,253,504]},
+        {label:"dog", bbox:[279,311,460,504]},
+        {label:"ships", bbox:[1,158,504,264]}
+      ];
+
+      // Animate Ours
+      setTimeout(() => {
+        const oursText = document.getElementById("ours-text");
+        oursText.textContent = `
+a cute dog [552][620][1016][1012]
+a boy [204][564][524][1016]
+ships [4][300][988][488]`;
+        drawBoxes("ours-detect", "ours-detect-img", ours_boxes, 1024);
+      }, 1000);
+
+      // Animate Qwen
+      const qwen_output = `
+[
+\t{"bbox_2d": [104, 278, 253, 504], "label": "boy"},
+\t{"bbox_2d": [279, 311, 460, 504], "label": "dog"},
+\t{"bbox_2d": [1, 158, 504, 264], "label": "ships"}
+]`;
+
+      const qwenBoxEl = document.getElementById("qwen-text");
+      let idx = 0;
+      let boxIdx = 0;
+      const boxEndIndices = [];
+      let pos = 0;
+      const lines = qwen_output.split('\n');
+      lines.forEach((line, i) => {
+        if (line.includes('"bbox_2d"')) {
+          boxEndIndices.push(pos + line.length);
+        }
+        pos += line.length + 1;
+      });
+
+      function typeWriter() {
+        if (idx < qwen_output.length) {
+          qwenBoxEl.textContent += qwen_output[idx];
+          idx++;
+          if (boxIdx < boxEndIndices.length && idx === boxEndIndices[boxIdx]) {
+            drawBoxes("qwen-detect", "qwen-detect-img", [qwen_boxes[boxIdx]], 512);
+            boxIdx++;
+          }
+          setTimeout(typeWriter, 30);
+        }
+      }
+      setTimeout(typeWriter, 500);
+    }
+
+    function drawBoxes(containerId, imgId, boxes, rawSize) {
+      const container = document.getElementById(containerId);
+      const img = document.getElementById(imgId);
+      
+      function scale() {
+        const w = img.clientWidth;
+        const h = img.clientHeight;
+        if (w === 0 || h === 0) return;
+        
+        boxes.forEach(b => {
+          const [x1,y1,x2,y2] = b.bbox;
+          const div = document.createElement("div");
+          div.className = "bbox";
+          div.style.left = (x1 * w / rawSize) + "px";
+          div.style.top = (y1 * h / rawSize) + "px";
+          div.style.width = ((x2 - x1) * w / rawSize) + "px";
+          div.style.height = ((y2 - y1) * h / rawSize) + "px";
+          container.appendChild(div);
+        });
+      }
+
+      if (img.complete) {
+        scale();
+      } else {
+        img.onload = scale;
+      }
+    }
+
+    // Planning T2I Animation
+    function animatePlanningT2I() {
+      const data = [
+        {"from":"user", "content":"<b>User:</b> an image of an horse above an astronaut on the surface of mars, dramatic lighting, ultra-realistic, volumetriclighting, backlight", "image":""},
+        {"from":"gpt", "content":"<b>LaViDa-O:</b> Sure I should place the objects in the following manner: <span style='color:red'>horse [216][0][812][720] </span> <span style='color:yellow'>astronaut [388][688][644][1020] </span> ", "image":"ours/plan1.jpeg"},
+        {"from":"gpt", "content":"<b>LaViDa-O:</b>", "image":"ours/plan2.jpeg"}
+      ];
+      showRoundsSequentially("planningt2i-timeline", data);
+    }
+
+    // Planning Edit Animation
+    function animatePlanningEdit() {
+      const data = [
+        {"from":"user", "content":"<b>User:</b> Replace the dog with a robot.", "image":"ours/plan5.jpeg"},
+        {"from":"gpt", "content":"<b>LaViDa-O:</b> Sure I should consider replacing the objects in these locations : <span style='color:red'> dog (to be replaced with robot) [388][232][1024][940] </span>", "image":"ours/plan6.jpeg"},
+        {"from":"gpt", "content":"<b>LaViDa-O:</b> ", "image":"ours/plan7.jpeg"}
+      ];
+      showRoundsSequentially("planning-timeline", data);
+    }
+
+    // Reflection Animation
+    function animateReflection() {
+      const data = [
+        {"from":"user", "content":"<b>User:</b> a photo of three apples", "image":""},
+        {"from":"gpt", "content":"<b>LaViDa-O:</b>This image is incorrect. There should be 3 apple, but only 2 exists in image. I should correct this.", "image":"ours/plan3.jpeg"},
+        {"from":"gpt", "content":"<b>LaViDa-O:</b> ", "image":"ours/plan4.jpeg"}
+      ];
+      showRoundsSequentially("reflection-timeline", data);
+    }
+
+    function showRoundsSequentially(containerId, rounds, delay = 1500) {
+      const container = document.getElementById(containerId);
+      rounds.forEach((r, i) => {
+        const div = document.createElement("div");
+        div.className = "round " + r.from;
+        div.innerHTML = r.content || "";
+        if (r.image) {
+          const img = document.createElement("img");
+          img.src = r.image;
+          div.appendChild(img);
+        }
+        container.appendChild(div);
+        setTimeout(() => {
+          div.classList.add("visible");
+        }, i * delay);
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      switchTab('t2i', 0);
+    });
+  </script>
+
+</body>
+</html>
