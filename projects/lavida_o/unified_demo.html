@@ -313,7 +313,7 @@ ships <span class="mask">[mask]</span><span class="mask">[mask]</span><span clas
     // Global state
     let currentTabIndex = 0;
     const tabs = ['t2i', 'detection', 'planning-t2i', 'planning-edit', 'reflection'];
-    const tabDurations = [8000, 6000, 4500, 4500, 4500]; // Duration for each tab in ms
+    const tabDurations = [8000, 6000, 4500, 4500, 4500*4/3]; // Duration for each tab in ms
     let isAnimating = false;
     let currentAnimation = null;
 
@@ -566,8 +566,8 @@ ships [4][300][988][488]`;
     function animateReflection() {
       const data = [
         {"from":"user", "content":"<b>User:</b> a photo of three apples", "image":""},
-        {"from":"gpt", "content":"<b>LaViDa-O:</b>This image is incorrect. There should be 3 apple, but only 2 exists in image. I should correct this.", "image":"ours/plan3.jpeg"},
-        {"from":"gpt", "content":"<b>LaViDa-O:</b> ", "image":"ours/plan4.jpeg"}
+        {"from":"gpt", "content":"<b>LaViDa-O:</b>", "image":"ours/plan3.jpeg"},
+        {"from":"gpt", "content":"<b>LaViDa-O:</b> This image is incorrect. There should be 3 apple, but only 2 exists in image. I should correct this.", "image":"ours/plan4.jpeg"},
       ];
       showRoundsSequentially("reflection-timeline", data);
     }
