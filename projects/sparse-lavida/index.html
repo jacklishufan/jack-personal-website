@@ -3,10 +3,10 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="LaViDa-O: Elastic Large Masked Diffusion Models for Unified Multimodal Understanding and Generation">
+  <meta name="description" content="Sparse-LaViDa: Sparse Multimodal Discrete Diffusion Language Models">
   <meta name="keywords" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LaViDa-O: Elastic Large Masked Diffusion Models for Unified Multimodal Understanding and Generation</title>
+  <title>Sparse-LaViDa: Sparse Multimodal Discrete Diffusion Language Models</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -33,7 +33,7 @@
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <!-- <h1 class="title is-1 publication-title">LaViDa</h1> -->
-            <h2 class="title is-2 publication-title">LaViDa-O: Elastic Large Masked Diffusion Models for Unified Multimodal Understanding and Generation</h2>
+            <h2 class="title is-2 publication-title">Sparse-LaViDa: Sparse Multimodal Discrete Diffusion Language Models</h2>
             <div class="is-size-5 publication-authors">
               <span class="author-block">
                 <a href="http://homepage.jackli.org/">Shufan Li*</a><sup>1,2</sup>,</span>
@@ -94,7 +94,7 @@
               <div class="publication-links">
                 <!-- PDF Link. -->
                 <span class="link-block">
-                  <a href="https://arxiv.org/abs/2509.19244"
+                  <a href="https://arxiv.org/abs/2512.14008"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -109,21 +109,10 @@
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
-                    <span>Code and Models</span>
+                    <span>Github (Placeholder)</span>
                   </a>
                 </span>
                 
-                <!-- Presentation Link. --->
-                <!-- <span class="link-block">
-                  <a href="https://drive.google.com/file/d/1ylt7KsLVR8IaBbhRLRL-2DRwiREPRy1r/view?usp=sharing"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-chalkboard"></i>
-                    </span>
-                    <span>Slides</span>
-                  </a>
-                </span> -->
-
               </div>
             </div>
           </div>
@@ -137,21 +126,21 @@
   <section class="hero teaser">
     <div class="container is-max-desktop">
       <div class="hero-body">
-        <img src="./static/images/teaser.png" height="100%"></img>
+        <img src="./static/images/teaser.gif" height="100%"></img>
       </div>
       <h2 class="subtitle has-text-centered">
-        <span class="dnerf">LaViD-O</span> is a unified multi-modal masked diffusion model (MDM) capbale of image Understanding, image generation, image editing, object grounding, and interleaved generation.
+        <span class="dnerf">Sparse-LaViDa</span> offers an efficienct parameterization of masked discrete diffusion models by dynamically truncating unnecessary masked tokens during inference, achieving up to 2x speedup across diverse tasks.
       </h2>
     </div>
   </section>
 
 
-    <section class="hero teaser">
+    <!-- <section class="hero teaser">
     <div style="display: flex; justify-content: center;">
       <iframe src="unified_demo.html" width="80%" height="600px" style="border:none;"></iframe>
     </div>
 
-  </section>
+  </section> -->
 
 
 
@@ -164,7 +153,7 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-We propose Lavida-O, a unified Masked Diffusion Model (MDM) for multimodal understanding and generation. Unlike existing multimodal MDMs such as MMaDa and Muddit which only support simple image-level understanding tasks and low-resolution image generation, Lavida-O presents a single framework that enables image-level understanding, object grounding, image editing, and high-resolution (1024px) text-to-image synthesis. Lavida-O incorporates a novel Elastic Mixture-of-Transformers (Elastic-MoT) architecture that couples a lightweight generation branch with a larger understanding branch, supported by token compression, universal text conditioning and stratified sampling for efficient and high-quality generation. Lavida-O further incorporates planning and iterative self-reflection in image generation and editing tasks, seamlessly boosting generation quality with its understanding capabilities. Lavida-O achieves state-of-the-art performance on a wide range of benchmarks including RefCOCO object grounding, GenEval text-to-image generation, and ImgEdit image editing, outperforming existing autoregressive models and continuous diffusion models such as Qwen2.5-VL and FluxKontext-dev, while offering considerable speedup at inference. These advances establish Lavida-O as a new paradigm for scalable multimodal reasoning and generation.
+Masked Discrete Diffusion Models (MDMs) have achieved strong performance across a wide range of multimodal tasks, including image understanding, generation, and editing. However, their inference speed remains suboptimal due to the need to repeatedly process redundant masked tokens at every sampling step. In this work, we propose Sparse-LaViDa, a novel modeling framework that dynamically truncates unnecessary masked tokens at each inference step to accelerate MDM sampling. To preserve generation quality, we introduce specialized register tokens that serve as compact representations for the truncated tokens. Furthermore, to ensure consistency between training and inference, we design a specialized attention mask that faithfully matches the truncated sampling procedure during training. Built upon the state-of-the-art unified MDM LaViDa-O, Sparse-LaViDa achieves up to a 2x speedup across diverse tasks including text-to-image generation, image editing, and mathematical reasoning, while maintaining generation quality.
             </p>
           </div>
         </div>
@@ -180,12 +169,11 @@ We propose Lavida-O, a unified Masked Diffusion Model (MDM) for multimodal under
 
       <div class="columns is-centered">
         <div class="column is-full-width">
-          <h2 class="title is-3">Model Architecture</h2>
+          <h2 class="title is-3">Overall Design</h2>
           <img src="./static/images/architecture.png">
           <div class="content has-text-justified">
 <p>
-  LaViDa-O employs a Senmantic-Encoder and VQ-Enocder to enocde input images. The output images are represented by discrete VQ tokenize, allowing seamless integration with text tokens for unified understanding and generation.
-
+Sparse-LaViDa builds on masked discrete diffusion models (MDMs), which explicitly process all masked tokens and support arbitrary-order decoding with bidirectional context, making them well suited for tasks such as image generation and inpainting. Block Diffusion improves efficiency by truncating redundant masked tokens from the right, but it enforces a left-to-right generation order via a block-causal attention mask, thereby losing many of the key benefits of MDMs and is only used for language modeling. Sparse-LaViDa offers an alternative parameterization that preserves the full flexibility of standard MDMs while achieving similar efficiency gains: it allows masked tokens to be truncated at arbitrary positions and introduces special register tokens that act as compact representations of the truncated content.
           </div>
         </div>
       </div>
@@ -197,12 +185,12 @@ We propose Lavida-O, a unified Masked Diffusion Model (MDM) for multimodal under
 
       <div class="columns is-centered">
         <div class="column is-full-width">
-          <h2 class="title is-3">Elastic-MoT</h2>
-          <img src="./static/images/Elastic-MoT.png">
+          <h2 class="title is-3">Inference</h2>
+          <img src="./static/images/inference.png">
           <div class="content has-text-justified">
 <p>
-  LaViDa-O employs a flexible Elastic-MoT design, with a lightweight generation branch and a larger understanding branch. The two branches can be flexibly activated depending on the tasks to optimize training and inference efficiency.
-</p>
+  Sparse-LaViDa's inference proceeds in a staged decoding process. At each step, the model works with a mixture of tokens that include previously generated content retained from earlier steps, newly generated tokens from the immediately preceding step, tokens that are still masked and scheduled to be predicted next, and a small set of register tokens that summarize truncated information. During sampling, a carefully designed attention pattern ensures a clean separation of roles: newly generated tokens do not look ahead to masked or register tokens. This design maintains correct generation order while allowing the model to decode efficiently without unnecessary computation.
+  </p>
 
           </div>
         </div>
@@ -215,11 +203,11 @@ We propose Lavida-O, a unified Masked Diffusion Model (MDM) for multimodal under
 
       <div class="columns is-centered">
         <div class="column is-full-width">
-          <h2 class="title is-3">Interleaved Reasoning with Planning and Reflection</h2>
-          <img src="./static/images/interleaved.png" style="transform: scale(0.8); display: block; margin: 0 auto;">
+          <h2 class="title is-3">Efficient Training</h2>
+          <img src="./static/images/attnmask.png" style="transform: scale(0.8); display: block; margin: 0 auto;">
           <div class="content has-text-justified">
 <p>
-  LaViDa-O introduces a novel paradigm that explicitly leverages the understanding capabilities of a unified model to improve its generation through planning and self-reflection. This design greatly improves the instruction following capabilities in text-to-image generation and image editing tasks.
+During training, we use a step-causal attention mask that mirrors how the model behaves at inference time. The input sequence contains prompt tokens followed by answer tokens, some of which are already known while others are masked. As in inference, known tokens are generated earlier in multiple steps. To reflect this, we group tokens into ordered blocks so that each token can only attend to tokens from earlier stages or its own stage. Masked tokens are placed into separate groups, each paired with a small register token that summarizes the information the model would not directly see at inference. The attention pattern ensures that masked groups remain isolated from one another while still having access to all earlier, unmasked content. In this way, a single training step can faithfully reproduce multiple possible inference paths, aligning training behavior with how the model is actually used at test time.
 </p>
 
           </div>
@@ -239,7 +227,7 @@ We propose Lavida-O, a unified Masked Diffusion Model (MDM) for multimodal under
             <img src="./static/images/speed.png">
             <div class="content has-text-justified">
 <p>
- Thanks to the parallel decoding process of diffusion models and the efficient Elastic-MoT architecture, LaViDa-O achieves significantly faster inference speed than existing autoregressive models (e.g., Qwen2.5-VL) and continuous diffusion models (e.g., FluxKontext-dev) on various tasks. Most notably, it achiecevs a 6.8x speedup over Qwen2.5-VL on object grounding.
+ Thanks to the efficient sparse parameterization, Sparse-LaVida achieves considerable speedup on a wide range of tasks. Notably, it achieves 1.96x speedup on text-to-image generation, 2.84x speedup on image editing and 2.80x speedup on visual math problem solving.
 </p>
             </div>
           </div>
@@ -257,8 +245,8 @@ We propose Lavida-O, a unified Masked Diffusion Model (MDM) for multimodal under
         <div class="columns is-centered" style="width: 100%">
           <div class="column is-full-width" style="width: 100%">
             <h2 class="title is-3">More Results</h2>
-            <img src="./static/images/T2iDemo-5.png">
-             <img src="./static/images/EditingDemo-5.png">
+            <img src="./static/images/demo.png">
+             <!-- <img src="./static/images/EditingDemo-5.png"> -->
             <div class="content has-text-justified">
 <p>
 
