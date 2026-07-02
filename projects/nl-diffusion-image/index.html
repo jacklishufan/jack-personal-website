@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Nemotron-Labs-Diffusion-Image: Advancing Masked Discrete Diffusion for High-Resolution Image Synthesis">
+  <meta name="keywords" content="discrete diffusion, text-to-image, image synthesis, masked diffusion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NL-Diffusion-Image</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://homepage.jackli.org">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+          <span>Home</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h2 class="title is-2 publication-title">Nemotron-Labs-Diffusion-Image: Advancing Masked Discrete Diffusion for High-Resolution Image Synthesis</h2>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="http://homepage.jackli.org/">Shufan Li</a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                Greg Heinrich<sup>2</sup>,</span>
+              <span class="author-block">
+                Hanrong Ye<sup>2</sup>,</span>
+              <span class="author-block">
+                Yonggan Fu<sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://aditya-grover.github.io">Aditya Grover</a><sup>1</sup>,</span>
+              <span class="author-block">
+                Jan Kautz<sup>2</sup>,</span>
+              <span class="author-block">
+                Pavlo Molchanov<sup>2</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>UCLA</span>
+              <span class="author-block"><sup>2</sup>NVIDIA</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- Paper Link -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2606.29814"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!-- ArXiv Link -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2606.29814"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Model Link (coming soon) -->
+                <!-- <span class="link-block">
+                  <a href="https://huggingface.co/nvidia/NL-Diffusion-Image"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-robot"></i>
+                    </span>
+                    <span>Model</span>
+                  </a>
+                </span> -->
+                <!-- HF Space Demo (coming soon) -->
+                <!-- <span class="link-block">
+                  <a href="https://huggingface.co/spaces/nvidia/NL-Diffusion-Image"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-play-circle"></i>
+                    </span>
+                    <span>Demo</span>
+                  </a>
+                </span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+        <img src="./static/images/demo_1.gif" style="max-width: 30%; height: auto;" alt="Generation demo 1">
+        <img src="./static/images/demo_2.gif" style="max-width: 30%; height: auto;" alt="Generation demo 2">
+        <img src="./static/images/demo_3.gif" style="max-width: 30%; height: auto;" alt="Generation demo 3">
+      </div>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">NL-Diffusion-Image</span> generates high-resolution images through iterative masked discrete diffusion, progressively unmasking image tokens from noise to a coherent scene.
+      </h2>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              We present <strong>NL-Diffusion-Image</strong>, a text-to-image generation model that advances masked discrete diffusion for high-resolution image synthesis. Unlike continuous diffusion models that operate in latent space, NL-Diffusion-Image treats image generation as iterative unmasking of discrete visual tokens, enabling parallel bidirectional decoding throughout the denoising process. We introduce an improved training objective — the Generalized Cross-Entropy (GCE) objective — which stabilizes training and improves sample quality across a wide range of resolutions. Our model supports flexible few-step generation with controllable speed-quality tradeoffs and enables token-level image editing without additional fine-tuning. Extensive benchmarks demonstrate that NL-Diffusion-Image achieves state-of-the-art performance among discrete diffusion models while remaining highly competitive with leading continuous diffusion approaches.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Model Architecture</h2>
+          <img src="./static/images/architecture.png" alt="Model architecture diagram">
+          <div class="content has-text-justified" style="margin-top: 1rem;">
+            <p>
+              NL-Diffusion-Image adopts a Transformer-based architecture operating on discrete visual token sequences. An image is encoded into a grid of discrete tokens using a VQ-based tokenizer. The masked diffusion model then learns to predict the clean tokens from a corrupted (partially masked) sequence, conditioned on the text prompt via cross-attention. During inference, the model iteratively unmaskes tokens in parallel over multiple diffusion steps, progressing from a fully masked sequence to a complete image.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">GCE Training Objective</h2>
+          <img src="./static/images/gce_objective.png" alt="GCE objective illustration">
+          <div class="content has-text-justified" style="margin-top: 1rem;">
+            <p>
+              A key contribution of this work is the <strong>Generalized Cross-Entropy (GCE) objective</strong>, which improves upon the standard masked language modeling loss used in prior discrete diffusion models. By down-weighting easy predictions and focusing training on harder, more uncertain tokens, GCE provides better gradient signal throughout the denoising trajectory and leads to substantially improved generation quality without increasing training cost.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Few-Step Generation</h2>
+          <img src="./static/images/few_step_generation.png" alt="Few-step generation examples">
+          <div class="content has-text-justified" style="margin-top: 1rem;">
+            <p>
+              NL-Diffusion-Image supports flexible few-step generation, allowing users to trade quality for speed by reducing the number of denoising steps. Even with as few as 8 steps, the model produces highly coherent and visually appealing images, while 64 steps yield the best quality. This flexibility makes the model practical for a range of latency-sensitive applications.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Token-Level Image Editing</h2>
+          <img src="./static/images/token_editing.png" alt="Token editing examples">
+          <div class="content has-text-justified" style="margin-top: 1rem;">
+            <p>
+              Because NL-Diffusion-Image operates on discrete visual tokens, it naturally supports token-level image editing without any additional fine-tuning. Given an input image and an editing instruction, the model selectively remasks and regenerates only the relevant tokens, preserving the remainder of the image. This enables precise local edits such as object replacement, style transfer, and background modification while maintaining global consistency.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Speed Comparison</h2>
+          <img src="./static/images/speed_comparison.gif" alt="Speed comparison animation">
+          <div class="content has-text-justified" style="margin-top: 1rem;">
+            <p>
+              Compared to autoregressive and continuous diffusion baselines, NL-Diffusion-Image achieves significantly faster wall-clock generation time thanks to its parallel unmasking strategy. The model generates all image tokens simultaneously at each step rather than sequentially, resulting in sub-second generation at 256×256 resolution and competitive throughput at 1024×1024 on modern hardware.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Benchmarks</h2>
+          <img src="./static/images/benchmarks.png" alt="Benchmark results">
+          <div class="content has-text-justified" style="margin-top: 1rem;">
+            <p>
+              We evaluate NL-Diffusion-Image on standard text-to-image benchmarks including GenEval and MJHQ. Our model achieves state-of-the-art performance among discrete diffusion approaches and remains competitive with leading continuous diffusion models, demonstrating that masked discrete diffusion is a viable and efficient paradigm for high-resolution image synthesis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{li2026nemotron,
+  title   = {Nemotron-Labs-Diffusion-Image: Advancing Masked Discrete Diffusion
+             for High-Resolution Image Synthesis},
+  author  = {Li, Shufan and Heinrich, Greg and Ye, Hanrong and Fu, Yonggan and
+             Grover, Aditya and Kautz, Jan and Molchanov, Pavlo},
+  journal = {arXiv preprint arXiv:2606.29814},
+  year    = {2026}
+}</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This website came from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies project website
+                template</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
