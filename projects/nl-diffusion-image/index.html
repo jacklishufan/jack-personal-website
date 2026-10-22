@@ -147,7 +147,7 @@
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              We present <strong>NL-Diffusion-Image</strong>, a text-to-image generation model that advances masked discrete diffusion for high-resolution image synthesis. Unlike continuous diffusion models that operate in latent space, NL-Diffusion-Image treats image generation as iterative unmasking of discrete visual tokens, enabling parallel bidirectional decoding throughout the denoising process. We introduce an improved training objective — the Generalized Cross-Entropy (GCE) objective — which stabilizes training and improves sample quality across a wide range of resolutions. Our model supports flexible few-step generation with controllable speed-quality tradeoffs and enables token-level image editing without additional fine-tuning. Extensive benchmarks demonstrate that NL-Diffusion-Image achieves state-of-the-art performance among discrete diffusion models while remaining highly competitive with leading continuous diffusion approaches.
+              We present <strong>NL-Diffusion-Image</strong>, a text-to-image generation model that advances masked discrete diffusion for high-resolution image synthesis. Unlike continuous diffusion models that operate in latent space, NL-Diffusion-Image treats image generation as iterative unmasking of discrete visual tokens, enabling parallel bidirectional decoding throughout the denoising process. We introduce an improved training objective — the Grouped Cross-Entropy (GCE) objective — which alleviates per-token signal sparsity in large-vocabulary settings by assigning positive learning credit to tokens neighboring the ground truth in embedding space. Our model also incorporates a token-editing mechanism that enables the model to dynamically revise already-unmasked tokens during inference, addressing the lack of self-correction in standard masked diffusion models, and supports flexible few-step generation with controllable speed-quality tradeoffs. Extensive benchmarks demonstrate that NL-Diffusion-Image achieves state-of-the-art performance among discrete diffusion models while remaining highly competitive with leading continuous diffusion approaches.
             </p>
           </div>
         </div>
@@ -181,7 +181,7 @@
           <img src="./static/images/gce_objective.png" alt="GCE objective illustration">
           <div class="content has-text-justified" style="margin-top: 1rem;">
             <p>
-              A key contribution of this work is the <strong>Generalized Cross-Entropy (GCE) objective</strong>, which improves upon the standard masked language modeling loss used in prior discrete diffusion models. By down-weighting easy predictions and focusing training on harder, more uncertain tokens, GCE provides better gradient signal throughout the denoising trajectory and leads to substantially improved generation quality without increasing training cost.
+              A key contribution of this work is the <strong>Grouped Cross-Entropy (GCE) objective</strong>, which addresses a fundamental challenge in discrete diffusion: as tokenizer vocabulary size grows, the per-token training signal becomes increasingly sparse. GCE alleviates this by assigning positive learning credit to tokens that neighbor the ground truth in embedding space, providing richer gradient signal and leading to substantially improved generation quality without increasing training cost.
             </p>
           </div>
         </div>
@@ -211,11 +211,11 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column is-full-width">
-          <h2 class="title is-3">Token-Level Image Editing</h2>
+          <h2 class="title is-3">Token-Level Editing During Inference</h2>
           <img src="./static/images/token_editing.png" alt="Token editing examples">
           <div class="content has-text-justified" style="margin-top: 1rem;">
             <p>
-              Because NL-Diffusion-Image operates on discrete visual tokens, it naturally supports token-level image editing without any additional fine-tuning. Given an input image and an editing instruction, the model selectively remasks and regenerates only the relevant tokens, preserving the remainder of the image. This enables precise local edits such as object replacement, style transfer, and background modification while maintaining global consistency.
+              A known limitation of standard masked diffusion is that discrete tokens cannot be modified once they are unmasked, removing any self-correcting capability. NL-Diffusion-Image addresses this with a token-editing mechanism that enables the model to dynamically revise already-unmasked tokens during inference — similar to how a sculptor iteratively refines their work — resulting in more coherent and higher-fidelity outputs.
             </p>
           </div>
         </div>
