@@ -1,3 +1,6 @@
 {
-    "livePreview.defaultPreviewPath": "/projects/segllm.html"
+    "livePreview.defaultPreviewPath": "/projects/segllm.html",
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/shufanl/miniconda3/bin:${env:PATH}"
+    }
 }

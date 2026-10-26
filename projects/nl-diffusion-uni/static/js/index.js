@@ -65,13 +65,47 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelectorAll('.compare-control input').forEach(slider => {
-    slider.addEventListener('input', () => {
-      const compare = slider.closest('.edit-card').querySelector('.compare');
+    const compare = slider.closest('.edit-card').querySelector('.compare');
+    const divider = compare.querySelector('.compare-divider');
+    let activePointer = null;
+
+    function updateSplit() {
       compare.style.setProperty('--split', `${slider.value}%`);
       slider.setAttribute('aria-valuetext', `${slider.value}% input visible`);
       compare.querySelector('.input-label').hidden = Number(slider.value) < 12;
       compare.querySelector('.output-label').hidden = Number(slider.value) > 88;
+    }
+    function updateFromPointer(event) {
+      const bounds = compare.getBoundingClientRect();
+      if (!bounds.width) return;
+      slider.value = Math.round(Math.max(0, Math.min(100, (event.clientX - bounds.left) / bounds.width * 100)));
+      updateSplit();
+    }
+
+    slider.addEventListener('input', updateSplit);
+    divider.addEventListener('pointerdown', event => {
+      if (!event.isPrimary || event.button !== 0 || activePointer !== null) return;
+      event.preventDefault();
+      activePointer = event.pointerId;
+      divider.setPointerCapture(activePointer);
+      updateFromPointer(event);
     });
+    divider.addEventListener('pointermove', event => {
+      if (event.pointerId === activePointer) updateFromPointer(event);
+    });
+    divider.addEventListener('pointerup', event => {
+      if (event.pointerId !== activePointer) return;
+      updateFromPointer(event);
+      divider.releasePointerCapture(activePointer);
+      activePointer = null;
+    });
+    divider.addEventListener('pointercancel', () => {
+      activePointer = null;
+    });
+    divider.addEventListener('lostpointercapture', () => {
+      activePointer = null;
+    });
+    updateSplit();
   });
   document.querySelectorAll('.grounding-toggle input').forEach(toggle => {
     toggle.addEventListener('change', () => {
