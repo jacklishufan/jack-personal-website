@@ -3,10 +3,10 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="NLDUni: unified diffusion for image generation, editing, visual understanding, math reasoning, and object grounding">
+  <meta name="description" content="NLD-Uni: unified diffusion for image generation, editing, visual understanding, math reasoning, and object grounding">
   <meta name="keywords" content="unified diffusion, text-to-image, image editing, visual reasoning, object grounding">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NLDUni · Unified Diffusion for Vision and Generation</title>
+  <title>NLD-Uni · Unified Diffusion for Vision and Generation</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -320,16 +320,16 @@ Answer: 0.33</pre></details>
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              We propose <strong>Nemotron-Labs-Diffusion-Uni (NLDUni)</strong>, a unified discrete diffusion large language model (DLLM)
-for visual understanding and generation tasks. Compared with prior unified diffusion models, NLDUni in-
+              We propose <strong>Nemotron-Labs-Diffusion-Uni (NLD-Uni)</strong>, a unified discrete diffusion large language model (DLLM)
+for visual understanding and generation tasks. Compared with prior unified diffusion models, NLD-Uni in-
 troduces two major innovations. First, we propose a unified cross-paradigm on-policy distillation (OPD)
 framework that successfully transfers the visual understanding ability of autoregressive VLMs and visual
-generation ability of continuous flow models, to a unified DLLM. Second, NLDUni incorporates a novel
+generation ability of continuous flow models, to a unified DLLM. Second, NLD-Uni incorporates a novel
 progressive self-refining diffusion process that gradually corrupts each token across multiple steps during
 training, as opposed to adopting the conventional masked diffusion formulation that directly corrupts a
-clean image token to an uninformative mask token. At inference, this design allows NLDUni to make
+clean image token to an uninformative mask token. At inference, this design allows NLD-Uni to make
 intermediate commit to a token, enabling progressive self-refinement for better visual quality. Through
-extensive experiments, we show that NLDUni achieves state-of-the-art performance among unified DLLMs
+extensive experiments, we show that NLD-Uni achieves state-of-the-art performance among unified DLLMs
 on diverse tasks including visual question-answering, multi-modal reasoning, object grounding, text-to-image
 generation, and image editing.
             </p>
@@ -348,10 +348,10 @@ generation, and image editing.
           <img src="./static/images/arch.png" alt="Model architecture diagram">
           <div class="content has-text-justified" style="margin-top: 1rem;">
             <p>
-             NLDUni is a unified diffusion model whose input and
+             NLD-Uni is a unified diffusion model whose input and
 output are both multimodal. Images in the input stream are represented by both continuous embeddings of a
 semantic encoder and discrete tokens of a VQ encoder. Images in the output stream are represented solely
-using VQ codes. NLDUni is trained to predict the clean token distribution given partially masked inputs.
+using VQ codes. NLD-Uni is trained to predict the clean token distribution given partially masked inputs.
 For image generation, we incorporate an intermediate masking state.
             </p>
           </div>
@@ -369,7 +369,7 @@ For image generation, we incorporate an intermediate masking state.
           <img src="./static/images/diffusion.png" alt="Self-Refining Diffusion Process illustration">
           <div class="content has-text-justified" style="margin-top: 1rem;">
             <p>
-              A key contribution of this work is the self-refining diffusion process, which gradually corrupts each token across multiple steps during training. This is in contrast to the conventional masked diffusion formulation that directly corrupts a clean image token to an uninformative mask token. At inference, this design allows NLDUni to make intermediate commit to a token, enabling progressive self-refinement for better visual quality.
+              A key contribution of this work is the self-refining diffusion process, which gradually corrupts each token across multiple steps during training. This is in contrast to the conventional masked diffusion formulation that directly corrupts a clean image token to an uninformative mask token. At inference, this design allows NLD-Uni to make intermediate commit to a token, enabling progressive self-refinement for better visual quality.
             </p>
           </div>
           <img src="./static/images/corruption.png" alt="Few-step generation examples">
@@ -393,7 +393,7 @@ For image generation, we incorporate an intermediate masking state.
           <img src="./static/images/ardistill.png" alt="Few-step generation examples">
           <div class="content has-text-justified" style="margin-top: 1rem;">
             <p>
-              NL-Diffusion-Uni learns from an autoregressive teacher model through a cross-paradigm on-policy distillation (OPD) framework. Specifically, NLDUni is variable block-size diffusion model, whose block-size-one view is effectively an autoregressive model. During training, the AR view of NLDUni is distilled from the AR teacher model, while we indirectly train the diffusion view with a self-consistency loss that encourages the diffusion view to produce similar outputs as the AR view. This allows NLDUni to inherit the strong visual understanding capabilities of the AR teacher model, while also benefiting from the parallel generation capabilities of the diffusion model.
+              NL-Diffusion-Uni learns from an autoregressive teacher model through a cross-paradigm on-policy distillation (OPD) framework. Specifically, NLD-Uni is variable block-size diffusion model, whose block-size-one view is effectively an autoregressive model. During training, the AR view of NLD-Uni is distilled from the AR teacher model, while we indirectly train the diffusion view with a self-consistency loss that encourages the diffusion view to produce similar outputs as the AR view. This allows NLD-Uni to inherit the strong visual understanding capabilities of the AR teacher model, while also benefiting from the parallel generation capabilities of the diffusion model.
             </p>
           </div>
 
@@ -430,7 +430,7 @@ closely aligned to the student's output while having better visual fidelity and 
             <img src="./static/images/demo.gif" alt="Speed comparison animation">
           <div class="content has-text-justified" style="margin-top: 1rem;">
             <p>
-               NLDUni achieves highly competitive visual understanding and generation performance. Visual understanding performance is averaged across 11 tasks (refer to paper for details). Text-to-image and image editing reports GenEval and ImgEdit Score. Multimodal reasoning is measured on MathVista. Axes are normalized by the best model's performance on each task.
+               NLD-Uni achieves highly competitive visual understanding and generation performance. Visual understanding performance is averaged across 11 tasks (refer to paper for details). Text-to-image and image editing reports GenEval and ImgEdit Score. Multimodal reasoning is measured on MathVista. Axes are normalized by the best model's performance on each task.
             </p>
           </div>
         </div>
